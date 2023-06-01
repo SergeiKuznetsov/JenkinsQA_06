@@ -15,9 +15,11 @@ public class OrganizationFolderTest extends BaseTest {
         String actualNewFolderName = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(expectedNewFolderName)
-                .selectOrganizationFolderAndOk()
+                .selectOrganizationFolder()
+                .clickOkButton()
                 .clickSaveButton()
-                .clickDashboard()
+                .getHeader()
+                .clickLogo()
                 .getProjectNameMainPage(expectedNewFolderName);
 
         Assert.assertEquals(actualNewFolderName, expectedNewFolderName);
@@ -52,7 +54,8 @@ public class OrganizationFolderTest extends BaseTest {
                 .clickSaveButton()
                 .clickNewItem()
                 .enterItemName(organizationFolderName)
-                .selectOrganizationFolderAndOk()
+                .selectOrganizationFolder()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickMoveOnLeftMenu()
                 .selectDestinationFolder(folderName)

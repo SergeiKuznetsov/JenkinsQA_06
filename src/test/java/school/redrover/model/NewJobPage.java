@@ -1,5 +1,6 @@
 package school.redrover.model;
 
+import org.checkerframework.checker.units.qual.C;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -8,13 +9,16 @@ import school.redrover.model.base.BaseConfigPage;
 import school.redrover.model.base.BaseMainHeaderPage;
 import school.redrover.model.base.BaseModel;
 
-public class NewJobPage extends BaseMainHeaderPage<NewJobPage> {
+public class NewJobPage<ConfigPage extends BaseConfigPage<?,?>> extends BaseMainHeaderPage<NewJobPage<?>> {
 
-    public NewJobPage(WebDriver driver) {
+    private final ConfigPage configPage;
+
+    public NewJobPage(WebDriver driver, ConfigPage configPage) {
         super(driver);
+        this.configPage = configPage;
     }
 
-    public NewJobPage enterItemName(String nameJob) {
+    public NewJobPage<ConfigPage> enterItemName(String nameJob) {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name']"))).sendKeys(nameJob);
         return this;
     }
@@ -37,7 +41,7 @@ public class NewJobPage extends BaseMainHeaderPage<NewJobPage> {
         return new MultiConfigurationProjectConfigPage(new MultiConfigurationProjectPage(getDriver()));
     }
 
-    public NewJobPage selectMultiConfigurationProject() {
+    public NewJobPage<ConfigPage> selectMultiConfigurationProject() {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//li[@class='hudson_matrix_MatrixProject']"))).click();
         return this;
     }
@@ -54,13 +58,12 @@ public class NewJobPage extends BaseMainHeaderPage<NewJobPage> {
         return new MultibranchPipelineConfigPage(new MultibranchPipelinePage(getDriver()));
     }
 
-    public OrganizationFolderConfigPage selectOrganizationFolderAndOk() {
+    public NewJobPage<OrganizationFolderConfigPage> selectOrganizationFolder() {
         getDriver().findElement(By.xpath("//li[contains(@class, 'OrganizationFolder')]")).click();
-        getOkButton().click();
-        return new OrganizationFolderConfigPage(new OrganizationFolderPage(getDriver()));
+        return new NewJobPage<>(getDriver(), new OrganizationFolderConfigPage(new OrganizationFolderPage(getDriver())));
     }
 
-    public NewJobPage copyFrom(String typeToAutocomplete) {
+    public NewJobPage<ConfigPage>copyFrom(String typeToAutocomplete) {
         getDriver().findElement(By.xpath("//input[contains(@autocompleteurl, 'autoCompleteCopyNewItemFrom')]"))
                 .sendKeys(typeToAutocomplete);
         return this;
@@ -70,7 +73,7 @@ public class NewJobPage extends BaseMainHeaderPage<NewJobPage> {
         return getWait2().until(ExpectedConditions.visibilityOf(getItemInvalidNameMessage())).getText();
     }
 
-    public NewJobPage selectFreestyleProject() {
+    public NewJobPage<ConfigPage> selectFreestyleProject() {
         getWait5().until(ExpectedConditions.elementToBeClickable(getFreestyleProject())).click();
         return this;
     }
@@ -100,7 +103,7 @@ public class NewJobPage extends BaseMainHeaderPage<NewJobPage> {
         return getDriver().findElement(By.id("itemname-invalid"));
     }
 
-    public NewJobPage selectPipelineProject() {
+    public NewJobPage<ConfigPage> selectPipelineProject() {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Pipeline']"))).click();
         return this;
     }
@@ -108,11 +111,17 @@ public class NewJobPage extends BaseMainHeaderPage<NewJobPage> {
     public String getItemNameRequiredErrorText() {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-required"))).getText();
     }
-    public NewJobPage clickButtonOk() {
+    public NewJobPage<ConfigPage> clickButtonOk() {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button")))
                 .click();
         return this;
     }
+
+    public ConfigPage clickOkButton() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        return configPage;
+    }
+
     public FolderConfigPage copyFromFolder(String typeToAutocomplete) {
         getDriver().findElement(By.id("from"))
                 .sendKeys(typeToAutocomplete);
