@@ -19,9 +19,9 @@ public class FolderPage extends BaseMainHeaderPage<FolderPage> {
         return this;
     }
 
-    public NewJobPage newItem(){
+    public NewJobPage<?> newItem(){
         getDriver().findElement(By.cssSelector("#tasks>:nth-child(3)")).click();
-        return new NewJobPage(getDriver());
+        return new NewJobPage<>(getDriver(), null);
     }
 
     public DeleteFoldersPage delete(){
@@ -61,9 +61,9 @@ public class FolderPage extends BaseMainHeaderPage<FolderPage> {
         return this;
     }
 
-    public NewJobPage newJob(){
+    public NewJobPage<?> newJob(){
         getDriver().findElement(By.cssSelector("[href='newJob']")).click();
-        return new NewJobPage(getDriver());
+        return new NewJobPage<>(getDriver(), null);
     }
 
     public MainPage navigateToMainPageByBreadcrumbs() {
@@ -110,17 +110,17 @@ public class FolderPage extends BaseMainHeaderPage<FolderPage> {
         return new FolderConfigPage(new FolderPage(getDriver()));
     }
 
-    public NewJobPage clickNewItem() {
+    public NewJobPage<?> clickNewItem() {
         getDriver().findElement(By.cssSelector(".task-link-wrapper>a[href$='newJob']")).click();
-        return new NewJobPage(getDriver());
+        return new NewJobPage<>(getDriver(), null);
     }
 
-    public NewJobPage clickCreateAJob() {
+    public NewJobPage<?> clickCreateAJob() {
         WebElement createAJob = getDriver()
                 .findElement(By.xpath("//div[@id='main-panel']//span[text() = 'Create a job']"));
         getWait2().until(ExpectedConditions.elementToBeClickable(createAJob));
         createAJob.click();
-        return new NewJobPage(getDriver());
+        return new NewJobPage<>(getDriver(), null);
     }
 
     public boolean nestedFolderIsVisibleAndClickable(String nestedFolder) {

@@ -79,9 +79,9 @@ public class MyViewsPage extends BaseMainHeaderPage<MyViewsPage> {
         return new MyViewsPage(getDriver());
     }
 
-    public NewJobPage clickNewItem() {
+    public NewJobPage<?> clickNewItem() {
         getDriver().findElement(By.cssSelector(".task-link-wrapper>a[href$='newJob']")).click();
-        return new NewJobPage(getDriver());
+        return new NewJobPage<>(getDriver(), null);
     }
 
     public String getStatusMessageText() {

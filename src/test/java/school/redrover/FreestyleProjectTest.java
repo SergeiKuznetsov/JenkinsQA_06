@@ -39,7 +39,8 @@ public class FreestyleProjectTest extends BaseTest {
         WebElement projectName = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(FREESTYLE_NAME)
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickDashboard().getProjectName();
 
@@ -53,7 +54,8 @@ public class FreestyleProjectTest extends BaseTest {
         MainPage mainPage = new MainPage(getDriver())
                 .clickCreateAJobArrow()
                 .enterItemName(PROJECT_NAME)
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .getHeader()
                 .clickLogo();
 
@@ -70,7 +72,8 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickPeople()
                 .clickNewItem()
                 .enterItemName(projectName)
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickDashboard();
 
@@ -132,7 +135,7 @@ public class FreestyleProjectTest extends BaseTest {
 
     @Test(dataProvider = "wrong-character")
     public void testCreateFreestyleProjectWithInvalidName(String wrongCharacter){
-        NewJobPage newJobPage = new MainPage(getDriver())
+        NewJobPage<?> newJobPage = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(wrongCharacter);
 
@@ -180,7 +183,8 @@ public class FreestyleProjectTest extends BaseTest {
         FreestyleProjectPage freestyleProjectPage = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(FREESTYLE_NAME)
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .addDescription("Description")
                 .clickSaveButton();
 
@@ -193,7 +197,8 @@ public class FreestyleProjectTest extends BaseTest {
         String editDescription = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(FREESTYLE_NAME)
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickAddDescription()
                 .addDescription(DESCRIPTION_TEXT)
@@ -211,7 +216,8 @@ public class FreestyleProjectTest extends BaseTest {
         String previewDescription = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(FREESTYLE_NAME)
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickAddDescription()
                 .addDescription(DESCRIPTION_TEXT)
@@ -244,7 +250,8 @@ public class FreestyleProjectTest extends BaseTest {
         FreestyleProjectPage projectName = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(FREESTYLE_NAME)
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickTheDisableProjectButton();
 
@@ -256,7 +263,8 @@ public class FreestyleProjectTest extends BaseTest {
         MainPage projectName = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(FREESTYLE_NAME)
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickTheDisableProjectButton()
                 .clickTheEnableProjectButton()
@@ -270,7 +278,8 @@ public class FreestyleProjectTest extends BaseTest {
         FreestyleProjectPage freestyleProjectPage = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(FREESTYLE_NAME)
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickRenameProject(FREESTYLE_NAME)
                 .enterNewName(FREESTYLE_NAME + " New")
@@ -335,7 +344,8 @@ public class FreestyleProjectTest extends BaseTest {
         MyViewsPage h2text = new MyViewsPage(getDriver())
                 .clickNewItem()
                 .enterItemName(projectName)
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickDashboard()
                 .clickJobDropDownMenu(projectName)
@@ -352,7 +362,8 @@ public class FreestyleProjectTest extends BaseTest {
         String consoleOutput = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName("MyFreestyleProject")
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .addExecuteShellBuildStep("echo Hello")
                 .clickSaveButton()
                 .selectBuildNow()
@@ -368,7 +379,8 @@ public class FreestyleProjectTest extends BaseTest {
         new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName("Engineer")
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickDashboard()
                 .getProjectNameClick()
@@ -409,7 +421,8 @@ public class FreestyleProjectTest extends BaseTest {
         String consoleOutput = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(nameProject)
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .addBuildStepsExecuteShell(steps)
                 .clickSaveButton()
                 .selectBuildNow()
@@ -427,7 +440,8 @@ public class FreestyleProjectTest extends BaseTest {
         String previewText = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(FREESTYLE_NAME)
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickDashboard()
                 .clickJobDropDownMenu(FREESTYLE_NAME)

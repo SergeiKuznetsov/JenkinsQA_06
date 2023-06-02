@@ -33,25 +33,25 @@ public class MainPage extends BaseMainHeaderPage<MainPage> {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath(("//table[@id='projectstatus']"))));
     }
 
-    public NewJobPage clickNewItem() {
+    public NewJobPage<?> clickNewItem() {
         getDriver().findElement(By.cssSelector(".task-link-wrapper>a[href$='newJob']")).click();
-        return new NewJobPage(getDriver());
+        return new NewJobPage<>(getDriver(), null);
     }
 
-    public NewJobPage clickCreateAJob() {
+    public NewJobPage<?> clickCreateAJob() {
         WebElement createAJob = getDriver()
                 .findElement(By.xpath("//div[@id='main-panel']//span[text() = 'Create a job']"));
         getWait2().until(ExpectedConditions.elementToBeClickable(createAJob));
         createAJob.click();
-        return new NewJobPage(getDriver());
+        return new NewJobPage<>(getDriver(), null);
     }
 
-    public NewJobPage clickCreateAJobArrow() {
+    public NewJobPage<?> clickCreateAJobArrow() {
         getWait2().until(ExpectedConditions.elementToBeClickable(
                         By.xpath("//a[@href='newJob']/span[@class = 'trailing-icon']")))
                 .click();
 
-        return new NewJobPage(getDriver());
+        return new NewJobPage<>(getDriver(), null);
     }
 
     public WebElement getProjectName() {
@@ -162,11 +162,11 @@ public class MainPage extends BaseMainHeaderPage<MainPage> {
         return this;
     }
 
-    public NewJobPage clickNewItemInDashboardDropDownMenu() {
+    public NewJobPage<?> clickNewItemInDashboardDropDownMenu() {
         getWait2().until(ExpectedConditions
                         .visibilityOfElementLocated(By.xpath("//div[@id = 'breadcrumb-menu-target']//span[text()='New Item']")))
                 .click();
-        return new NewJobPage(getDriver());
+        return new NewJobPage<>(getDriver(), null);
     }
 
     public MultiConfigurationProjectPage getMultiConfigPage() {

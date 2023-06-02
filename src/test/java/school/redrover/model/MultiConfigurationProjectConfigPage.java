@@ -65,10 +65,10 @@ public class MultiConfigurationProjectConfigPage extends BaseConfigPage<MultiCon
         return maxNumOfBuildsToKeepNumber.getAttribute(attribute);
     }
 
-    public MultiConfigurationProjectPage clickSaveButton() {
-        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
-        return new MultiConfigurationProjectPage(getDriver());
-    }
+//    public MultiConfigurationProjectPage clickSaveButton() {
+//        getDriver().findElement(By.xpath("//button[@name='Submit']")).click();
+//        return new MultiConfigurationProjectPage(getDriver());
+//    }
 
     public MultiConfigurationProjectConfigPage switchCheckboxDisable() {
         getWait2().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath("//span[text() = 'Enabled']")))).click();

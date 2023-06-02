@@ -1,6 +1,5 @@
 package school.redrover;
 
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import school.redrover.model.MainPage;
@@ -50,7 +49,8 @@ public class OrganizationFolderTest extends BaseTest {
         boolean movedOrgFolderVisibleAndClickable = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(folderName)
-                .selectFolderAndOk()
+                .selectFolder()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickNewItem()
                 .enterItemName(organizationFolderName)

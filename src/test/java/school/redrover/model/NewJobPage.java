@@ -1,13 +1,11 @@
 package school.redrover.model;
 
-import org.checkerframework.checker.units.qual.C;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.base.BaseConfigPage;
 import school.redrover.model.base.BaseMainHeaderPage;
-import school.redrover.model.base.BaseModel;
 
 public class NewJobPage<ConfigPage extends BaseConfigPage<?,?>> extends BaseMainHeaderPage<NewJobPage<?>> {
 
@@ -23,44 +21,39 @@ public class NewJobPage<ConfigPage extends BaseConfigPage<?,?>> extends BaseMain
         return this;
     }
 
-    public FreestyleProjectConfigPage selectFreestyleProjectAndOk() {
-        getFreestyleProject().click();
-        getOkButton().click();
-        return new FreestyleProjectConfigPage(new FreestyleProjectPage(getDriver()));
-    }
-
-    public PipelineConfigPage selectPipelineAndOk() {
-        getDriver().findElement(By.xpath("//span[text()='Pipeline']")).click();
-        getOkButton().click();
-        return new PipelineConfigPage(new PipelinePage(getDriver()));
-    }
-
-    public MultiConfigurationProjectConfigPage selectMultiConfigurationProjectAndOk() {
-        getDriver().findElement(By.xpath("//span[.='Multi-configuration project']")).click();
-        getOkButton().click();
-        return new MultiConfigurationProjectConfigPage(new MultiConfigurationProjectPage(getDriver()));
-    }
-
-    public NewJobPage<ConfigPage> selectMultiConfigurationProject() {
+    public NewJobPage<MultiConfigurationProjectConfigPage> selectMultiConfigurationProject() {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//li[@class='hudson_matrix_MatrixProject']"))).click();
-        return this;
+        return new NewJobPage<>(getDriver(), new MultiConfigurationProjectConfigPage(new MultiConfigurationProjectPage(getDriver())));
     }
 
-    public FolderConfigPage selectFolderAndOk() {
+    public NewJobPage<FolderConfigPage> selectFolder() {
         getDriver().findElement(By.xpath("//li[contains(@class, 'folder_Folder')]")).click();
-        getOkButton().click();
-        return new FolderConfigPage(new FolderPage(getDriver()));
+        return new NewJobPage<>(getDriver(), new FolderConfigPage(new FolderPage(getDriver())));
     }
 
-    public MultibranchPipelineConfigPage selectMultibranchPipelineAndOk() {
+    public NewJobPage<MultibranchPipelineConfigPage> selectMultibranchPipeline() {
         getDriver().findElement(By.xpath("//li[contains(@class, 'WorkflowMultiBranchProject')]")).click();
-        getOkButton().click();
-        return new MultibranchPipelineConfigPage(new MultibranchPipelinePage(getDriver()));
+        return new NewJobPage<>(getDriver(), new MultibranchPipelineConfigPage(new MultibranchPipelinePage(getDriver())));
     }
 
     public NewJobPage<OrganizationFolderConfigPage> selectOrganizationFolder() {
         getDriver().findElement(By.xpath("//li[contains(@class, 'OrganizationFolder')]")).click();
         return new NewJobPage<>(getDriver(), new OrganizationFolderConfigPage(new OrganizationFolderPage(getDriver())));
+    }
+
+    public NewJobPage<FreestyleProjectConfigPage> selectFreestyleProject() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(getFreestyleProject())).click();
+        return new NewJobPage<>(getDriver(), new FreestyleProjectConfigPage(new FreestyleProjectPage(getDriver())));
+    }
+
+    public NewJobPage<PipelineConfigPage> selectPipelineProject() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Pipeline']"))).click();
+        return new NewJobPage<>(getDriver(), new PipelineConfigPage(new PipelinePage(getDriver())));
+    }
+
+    public ConfigPage clickOkButton() {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
+        return configPage;
     }
 
     public NewJobPage<ConfigPage>copyFrom(String typeToAutocomplete) {
@@ -71,11 +64,6 @@ public class NewJobPage<ConfigPage extends BaseConfigPage<?,?>> extends BaseMain
 
     public String getItemInvalidMessage() {
         return getWait2().until(ExpectedConditions.visibilityOf(getItemInvalidNameMessage())).getText();
-    }
-
-    public NewJobPage<ConfigPage> selectFreestyleProject() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(getFreestyleProject())).click();
-        return this;
     }
 
     public boolean isOkButtonEnabled() {
@@ -103,29 +91,20 @@ public class NewJobPage<ConfigPage extends BaseConfigPage<?,?>> extends BaseMain
         return getDriver().findElement(By.id("itemname-invalid"));
     }
 
-    public NewJobPage<ConfigPage> selectPipelineProject() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//span[text()='Pipeline']"))).click();
-        return this;
-    }
-
     public String getItemNameRequiredErrorText() {
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.id("itemname-required"))).getText();
     }
+
     public NewJobPage<ConfigPage> clickButtonOk() {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button")))
                 .click();
         return this;
     }
 
-    public ConfigPage clickOkButton() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-        return configPage;
-    }
-
     public FolderConfigPage copyFromFolder(String typeToAutocomplete) {
         getDriver().findElement(By.id("from"))
                 .sendKeys(typeToAutocomplete);
-        clickButtonOk();
+        clickOkButton();
         return new FolderConfigPage(new FolderPage(getDriver()));
     }
 }

@@ -13,7 +13,8 @@ public class BuildDescriptionTest extends BaseTest {
         return new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName("NewProject")
-                .selectPipelineAndOk()
+                .selectPipelineProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .getHeader()
                 .clickLogo();

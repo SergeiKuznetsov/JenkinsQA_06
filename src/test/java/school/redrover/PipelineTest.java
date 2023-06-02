@@ -44,7 +44,8 @@ public class PipelineTest extends BaseTest {
         String projectName = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(PIPELINE_NAME)
-                .selectPipelineAndOk()
+                .selectPipelineProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickDashboard()
                 .getProjectName()
@@ -60,7 +61,8 @@ public class PipelineTest extends BaseTest {
         String jobDescription = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(PIPELINE_NAME)
-                .selectPipelineAndOk()
+                .selectPipelineProject()
+                .clickOkButton()
                 .addDescription(textDescription)
                 .clickSaveButton()
                 .getDescription()
@@ -77,7 +79,8 @@ public class PipelineTest extends BaseTest {
         String jobDescription = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(PIPELINE_NAME)
-                .selectPipelineAndOk()
+                .selectPipelineProject()
+                .clickOkButton()
                 .addDescription(description)
                 .clickSaveButton()
                 .clickDashboard()
@@ -97,7 +100,8 @@ public class PipelineTest extends BaseTest {
         String stageName = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(PIPELINE_NAME)
-                .selectPipelineAndOk()
+                .selectPipelineProject()
+                .clickOkButton()
                 .clickScriptDropDownMenu()
                 .selectHelloWord()
                 .clickSaveButton()
@@ -113,7 +117,8 @@ public class PipelineTest extends BaseTest {
         String text = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(PIPELINE_NAME)
-                .selectPipelineAndOk()
+                .selectPipelineProject()
+                .clickOkButton()
                 .clickScriptDropDownMenu()
                 .selectHelloWord()
                 .clickSaveButton()
@@ -132,7 +137,8 @@ public class PipelineTest extends BaseTest {
         String resultDescriptionText = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(pipelineName)
-                .selectPipelineAndOk()
+                .selectPipelineProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickEditDescription()
                 .enterNewDescription(descriptionText)
@@ -162,7 +168,8 @@ public class PipelineTest extends BaseTest {
         new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(PIPELINE_NAME)
-                .selectPipelineAndOk()
+                .selectPipelineProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickDashboard()
                 .clickPipelineProject(PIPELINE_NAME)
@@ -177,7 +184,8 @@ public class PipelineTest extends BaseTest {
         String resultOptionDefinitionFieldText = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(PIPELINE_NAME)
-                .selectPipelineAndOk()
+                .selectPipelineProject()
+                .clickOkButton()
                 .scrollToPipelineSection()
                 .getOptionTextInDefinitionField();
 
@@ -191,7 +199,8 @@ public class PipelineTest extends BaseTest {
         new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(name)
-                .selectPipelineAndOk()
+                .selectPipelineProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickDashboard()
                 .dropDownMenuClickDelete(name)
@@ -364,7 +373,8 @@ public class PipelineTest extends BaseTest {
         String jobExists = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(PIPELINE_NAME)
-                .selectPipelineAndOk()
+                .selectPipelineProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickDashboard()
                 .clickNewItem()
@@ -456,7 +466,7 @@ public class PipelineTest extends BaseTest {
 
     @Test(dataProvider = "wrong-characters")
     public void testPipelineNameUnsafeChar(String wrongCharacters) {
-        NewJobPage newJobPage = new MainPage(getDriver())
+        NewJobPage<?> newJobPage = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(wrongCharacters);
         Assert.assertEquals(newJobPage.getItemInvalidMessage(), "» ‘" + wrongCharacters + "’ is an unsafe character");
@@ -465,7 +475,7 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testDotBeforeNameProject() {
-        NewJobPage newJobPage = new MainPage(getDriver())
+        NewJobPage<?> newJobPage = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(".");
 
@@ -474,13 +484,14 @@ public class PipelineTest extends BaseTest {
 
     @Test
     public void testCreatePipelineDashboardSliderNewItem() {
-        NewJobPage newJobPage = new MainPage(getDriver())
+        NewJobPage<?> newJobPage = new MainPage(getDriver())
                 .clickOnSliderDashboardInDropDownMenu()
                 .clickNewItemInDashboardDropDownMenu();
 
-        PipelinePage PipelinePage = new NewJobPage(getDriver())
+        PipelinePage PipelinePage = new NewJobPage<>(getDriver(), null)
                 .enterItemName(PIPELINE_NAME)
-                .selectPipelineAndOk()
+                .selectPipelineProject()
+                .clickOkButton()
                 .clickSaveButton();
 
         MainPage mainPage = new PipelinePage(getDriver())
@@ -643,7 +654,8 @@ public class PipelineTest extends BaseTest {
         String actualErrorMessage = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(PIPELINE_NAME)
-                .selectPipelineAndOk()
+                .selectPipelineProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickDashboard()
                 .clickNewItem()
@@ -661,7 +673,8 @@ public class PipelineTest extends BaseTest {
                 .clickManageJenkins()
                 .clickNewItem()
                 .enterItemName(PIPELINE_NAME)
-                .selectPipelineAndOk()
+                .selectPipelineProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickDashboard()
                 .getJobList();
@@ -693,7 +706,8 @@ public class PipelineTest extends BaseTest {
         String textPreview = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName("Engineer")
-                .selectPipelineAndOk()
+                .selectPipelineProject()
+                .clickOkButton()
                 .addDescription(description)
                 .clickPreview()
                 .getPreviewText();

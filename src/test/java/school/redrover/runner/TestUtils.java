@@ -29,8 +29,9 @@ public class TestUtils {
     public static void createFreestyleProject(BaseTest baseTest, String name, Boolean goToHomePage) {
         createProject(baseTest, name);
 
-        new NewJobPage(baseTest.getDriver())
-                .selectFreestyleProjectAndOk()
+        new NewJobPage<>(baseTest.getDriver(), null)
+                .selectFreestyleProject()
+                .clickOkButton()
                 .clickSaveButton();
 
         goToMainPage(baseTest, goToHomePage);
@@ -39,8 +40,9 @@ public class TestUtils {
     public static void createPipeline(BaseTest baseTest, String name, Boolean goToHomePage) {
         createProject(baseTest, name);
 
-        new NewJobPage(baseTest.getDriver())
-                .selectPipelineAndOk()
+        new NewJobPage<>(baseTest.getDriver(), null)
+                .selectPipelineProject()
+                .clickOkButton()
                 .clickSaveButton();
 
         goToMainPage(baseTest, goToHomePage);
@@ -49,8 +51,9 @@ public class TestUtils {
     public static void createMultiConfigurationProject(BaseTest baseTest, String name, Boolean goToHomePage) {
         createProject(baseTest, name);
 
-        new NewJobPage(baseTest.getDriver())
-                .selectMultiConfigurationProjectAndOk()
+        new NewJobPage<>(baseTest.getDriver(), null)
+                .selectMultiConfigurationProject()
+                .clickOkButton()
                 .saveConfigurePageAndGoToProjectPage();
 
         goToMainPage(baseTest, goToHomePage);
@@ -59,8 +62,9 @@ public class TestUtils {
     public static void createFolder(BaseTest baseTest, String name, Boolean goToHomePage) {
         createProject(baseTest, name);
 
-        new NewJobPage(baseTest.getDriver())
-                .selectFolderAndOk()
+        new NewJobPage<>(baseTest.getDriver(), null)
+                .selectFolder()
+                .clickOkButton()
                 .clickSaveButton();
 
         goToMainPage(baseTest, goToHomePage);
@@ -69,8 +73,9 @@ public class TestUtils {
     public static void createMultibranchPipeline(BaseTest baseTest, String name, Boolean goToHomePage) {
         createProject(baseTest, name);
 
-        new NewJobPage(baseTest.getDriver())
-                .selectMultibranchPipelineAndOk()
+        new NewJobPage<>(baseTest.getDriver(), null)
+                .selectMultibranchPipeline()
+                .clickOkButton()
                 .clickSaveButton();
 
         goToMainPage(baseTest, goToHomePage);
@@ -79,8 +84,9 @@ public class TestUtils {
     public static void createOrganizationFolder(BaseTest baseTest, String name, Boolean goToHomePage) {
         createProject(baseTest, name);
 
-        new NewJobPage(baseTest.getDriver())
-                .selectOrganizationFolderAndOk()
+        new NewJobPage<>(baseTest.getDriver(), null)
+                .selectOrganizationFolder()
+                .clickOkButton()
                 .clickSaveButton();
 
         goToMainPage(baseTest, goToHomePage);
@@ -156,7 +162,8 @@ public class TestUtils {
                 .clickDropDownMenuFolder(folderName)
                 .selectNewItemInDropDownMenu(viewName, folderName)
                 .enterItemName(jobName)
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .clickSaveButton();
 
        clickBreadcrumbLinkItem(baseTest, viewName);

@@ -41,7 +41,8 @@ public class FolderTest extends BaseTest {
         MainPage mainPage = new MainPage(getDriver())
                 .clickCreateAJob()
                 .enterItemName(NAME)
-                .selectFolderAndOk()
+                .selectFolder()
+                .clickOkButton()
                 .getHeader()
                 .clickLogo();
 
@@ -70,9 +71,10 @@ public class FolderTest extends BaseTest {
                 .click(getDriver().findElement(By.xpath("//ul[@class='first-of-type']//span[text()='New Item']")))
                 .perform();
 
-        new NewJobPage(getDriver())
+        new NewJobPage<>(getDriver(), null)
                 .enterItemName(NAME)
-                .selectFolderAndOk()
+                .selectFolder()
+                .clickOkButton()
                 .getHeader()
                 .clickLogo();
 
@@ -93,7 +95,8 @@ public class FolderTest extends BaseTest {
         new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(NAME)
-                .selectFolderAndOk();
+                .selectFolder()
+                .clickOkButton();
 
         Assert.assertEquals(getDriver().findElement(By.xpath("//h1")).getText(), errorMessage);
     }
@@ -238,7 +241,8 @@ public class FolderTest extends BaseTest {
                 .clickFolderName(folderName)
                 .newItem()
                 .enterItemName(newProjectName)
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickDashboard()
                 .clickFolderName(folderName)
@@ -254,7 +258,8 @@ public class FolderTest extends BaseTest {
                 .clickFolderName(NAME)
                 .newItem()
                 .enterItemName("My Multibranch Pipeline")
-                .selectMultibranchPipelineAndOk()
+                .selectMultibranchPipeline()
+                .clickOkButton()
                 .clickSaveButton()
                 .navigateToMainPageByBreadcrumbs()
                 .clickFolderName(NAME);
@@ -270,11 +275,13 @@ public class FolderTest extends BaseTest {
        MultiConfigurationProjectPage multiPage = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName("TC 00.04 New item Create Folder")
-                .selectFolderAndOk()
+                .selectFolder()
+               .clickOkButton()
                 .clickSaveButton()
                 .clickCreateAJob()
                 .enterItemName("Mine Project")
-                .selectMultiConfigurationProjectAndOk()
+                .selectMultiConfigurationProject()
+                .clickOkButton()
                 .saveConfigurePageAndGoToProjectPage();
 
         Assert.assertTrue(multiPage.getMultiProjectName().getText().contains("Mine Project"));
@@ -369,13 +376,15 @@ public class FolderTest extends BaseTest {
         String createdOrganizationFolder = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(nameFolder)
-                .selectFolderAndOk()
+                .selectFolder()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickDashboard()
                 .clickFolderName(nameFolder)
                 .clickNewItem()
                 .enterItemName(nameOrganizationFolder)
-                .selectOrganizationFolderAndOk()
+                .selectOrganizationFolder()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickDashboard()
                 .clickFolderName(nameFolder)
@@ -450,7 +459,8 @@ public class FolderTest extends BaseTest {
         WebElement createdOrganizationFolder = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(nameFolder)
-                .selectOrganizationFolderAndOk()
+                .selectOrganizationFolder()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickDashboard()
                 .clickFolderName(nameFolder)
@@ -487,7 +497,8 @@ public class FolderTest extends BaseTest {
         String createdMultiConfigurationProjectName = new MainPage(getDriver())
                 .clickNewItem()
                 .enterItemName(multiConfigurationProjectName)
-                .selectMultiConfigurationProjectAndOk()
+                .selectMultiConfigurationProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .clickDashboard()
 
@@ -513,7 +524,8 @@ public class FolderTest extends BaseTest {
         String projectName = new FolderPage(getDriver())
                 .clickNewItem()
                 .enterItemName(pipelineName)
-                .selectPipelineAndOk()
+                .selectPipelineProject()
+                .clickOkButton()
                 .clickSaveButton()
                 .getProjectName();
 

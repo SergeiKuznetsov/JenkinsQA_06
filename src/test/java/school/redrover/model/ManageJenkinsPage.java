@@ -57,10 +57,10 @@ public class ManageJenkinsPage extends BaseMainHeaderPage<ManageJenkinsPage> {
         return getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div[@class='jenkins-search__results']"))).getText();
     }
 
-    public NewJobPage clickNewItem() {
+    public NewJobPage<?> clickNewItem() {
         getDriver().findElement(By.linkText("New Item")).click();
 
-        return new NewJobPage(getDriver());
+        return new NewJobPage<>(getDriver(), null);
     }
 
     public ConfigureGlobalSecurityPage clickConfigureGlobalSecurity() {

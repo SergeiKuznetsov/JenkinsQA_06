@@ -96,8 +96,8 @@ public class ViewPage extends BaseMainHeaderPage<ViewPage> {
         return this;
     }
 
-    public NewJobPage selectNewItemInDropDownMenu(String viewName, String folderName) {
+    public NewJobPage<?> selectNewItemInDropDownMenu(String viewName, String folderName) {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath(String.format("//a[@href='/view/%s/job/%s/newJob']", viewName, folderName)))).click();
-        return new NewJobPage(getDriver());
+        return new NewJobPage<>(getDriver(), null);
     }
 }

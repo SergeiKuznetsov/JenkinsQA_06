@@ -21,7 +21,8 @@ public class DashboardTest extends BaseTest {
         return new MainPage(getDriver())
                 .clickCreateAJobArrow()
                 .enterItemName(name)
-                .selectFreestyleProjectAndOk()
+                .selectFreestyleProject()
+                .clickOkButton()
                 .clickJenkinsLogo();
     }
 
