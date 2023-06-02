@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 
 public class FolderTest extends BaseTest {
@@ -536,4 +537,23 @@ public class FolderTest extends BaseTest {
         Assert.assertTrue(folderPage.getNestedPipelineProject(pipelineName).getText().contains(pipelineName));
         Assert.assertEquals(projectName, "Pipeline " + pipelineName);
     }
+
+    @Test
+    public void testMovePipelineToFolder() {
+
+        TestUtils.createFolder(this, "testFolder",true);
+        TestUtils.createPipeline(this, "testPipeline",true);
+
+        String actualBreadcrumbText =
+            new MainPage(getDriver())
+            .clickJobDropDownMenu("testPipeline")
+            .dropDownMenuClickMove("testPipeline", new FolderPage(getDriver()))
+            .selectDestinationFolder("testFolder")
+            .clickMoveButton().
+            getBreadcrumbText();
+
+        assertEquals(actualBreadcrumbText, "Dashboard > testFolder > testPipeline");
+
+    }
+
 }
