@@ -16,6 +16,10 @@ public class NewJobPage<ConfigPage extends BaseConfigPage<?,?>> extends BaseMain
         this.configPage = configPage;
     }
 
+    protected ConfigPage getConfigPage() {
+        return configPage;
+    }
+
     public NewJobPage<ConfigPage> enterItemName(String nameJob) {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@id='name']"))).sendKeys(nameJob);
         return this;
@@ -53,7 +57,7 @@ public class NewJobPage<ConfigPage extends BaseConfigPage<?,?>> extends BaseMain
 
     public ConfigPage clickOkButton() {
         getWait2().until(ExpectedConditions.elementToBeClickable(By.id("ok-button"))).click();
-        return configPage;
+        return getConfigPage();
     }
 
     public NewJobPage<ConfigPage>copyFrom(String typeToAutocomplete) {
