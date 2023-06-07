@@ -2,7 +2,6 @@ package school.redrover;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -11,7 +10,6 @@ import school.redrover.model.*;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MultiConfigurationProjectTest extends BaseTest {
@@ -145,7 +143,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testMultiConfigurationProjectConfigurePageDisabled")
     public void testMultiConfigurationProjectConfigurePageEnable() {
         String configPage = new MainPage(getDriver())
-                .clickJobMultiConfigurationProject("My Multi configuration project")
+                .clickJobProject("My Multi configuration project", new MultiConfigurationProjectPage(getDriver()))
                 .clickConfigure()
                 .switchCheckboxEnabled()
                 .getTextEnabled().getText();
@@ -156,7 +154,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testDisabledMultiConfigurationProject")
     public void testEnabledMultiConfigurationProject() {
         String disableButtonText = new MainPage(getDriver())
-                .clickJobMultiConfigurationProject(MULTI_CONFIGURATION_NAME)
+                .clickJobProject(MULTI_CONFIGURATION_NAME, new MultiConfigurationProjectPage(getDriver()))
                 .clickEnable()
                 .getDisableButtonText();
 
@@ -167,7 +165,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testDisableMultiConfigurationProject")
     public void testMultiConfigurationProjectDisabled() {
         String enable = new MainPage(getDriver())
-                .clickMultiConfigurationProjectName("MyProject")
+                .clickJobProject("MyProject", new MultiConfigurationProjectPage(getDriver()))
                 .clickEnable()
                 .getDisableButtonText();
 
@@ -205,7 +203,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateMultiConfiguration")
     public void testProjectPageDelete() {
         MainPage deletedProjPage = new MainPage(getDriver())
-                .clickJobMultiConfigurationProject(MULTI_CONFIGURATION_NAME)
+                .clickJobProject(MULTI_CONFIGURATION_NAME, new MultiConfigurationProjectPage(getDriver()))
                 .clickDelete();
 
         Assert.assertEquals(deletedProjPage.getTitle(), "Dashboard [Jenkins]");
@@ -238,7 +236,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         final String text = "text";
 
         String addDescriptionText = new MainPage(getDriver())
-                .clickMultiConfigurationProjectName(MULTI_CONFIGURATION_NAME)
+                .clickJobProject(MULTI_CONFIGURATION_NAME, new MultiConfigurationProjectPage(getDriver()))
                 .changeDescriptionWithoutSaving(text)
                 .clickSaveButton()
                 .getDescription();
@@ -256,7 +254,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         MultiConfigurationProjectPage multiConfigurationProjectPage = new MainPage(getDriver())
                 .clickJobDropdownMenuBuildNow(MULTI_CONFIGURATION_NAME)
-                .clickJobMultiConfigurationProject(MULTI_CONFIGURATION_NAME);
+                .clickJobProject(MULTI_CONFIGURATION_NAME, new MultiConfigurationProjectPage(getDriver()));
 
         Assert.assertEquals(multiConfigurationProjectPage.getJobBuildStatus(MULTI_CONFIGURATION_NAME), "Success");
     }
@@ -310,7 +308,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateMultiConfigurationProjectOnProjectPage")
     public void testRenameMultiConfigurationProject() {
         String newName = new MainPage(getDriver())
-                .clickJobMultiConfigurationProject(MULTI_CONFIGURATION_NAME)
+                .clickJobProject(MULTI_CONFIGURATION_NAME, new MultiConfigurationProjectPage(getDriver()))
                 .clickRename()
                 .enterNewName(MULTI_CONFIGURATION_NEW_NAME)
                 .submitNewName()
@@ -502,7 +500,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     @Test(dependsOnMethods = "testCreateMultiConfiguration")
     public void testBuildNowOptionNotPresentInDisabledProject() {
         List<String> dropDownMenuItems = new MainPage(getDriver())
-                .clickMultiConfigurationProjectName(MULTI_CONFIGURATION_NAME)
+                .clickJobProject(MULTI_CONFIGURATION_NAME, new MultiConfigurationProjectPage(getDriver()))
                 .clickDisable()
                 .getHeader()
                 .clickLogo()
@@ -520,7 +518,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         TestUtils.createMultiConfigurationProject(this, nameProject, true);
         new MainPage(getDriver())
-                .clickMultiConfigurationProjectName(nameProject)
+                .clickJobProject(nameProject, new MultiConfigurationProjectPage(getDriver()))
                 .clickConfigure()
                 .clickGitHubProjectCheckbox()
                 .inputTextTheInputAreaProjectUrlInGitHubProject(gitHubUrl)

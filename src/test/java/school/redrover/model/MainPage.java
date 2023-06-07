@@ -15,7 +15,6 @@ public class MainPage extends BaseMainHeaderPage<MainPage> {
         super(driver);
     }
 
-
     public MainPage openJobDropDownMenu(String jobName) {
         getWait10().until(ExpectedConditions.visibilityOfElementLocated(
                         By.xpath(String.format("//a[contains(@href,'job/%s/')]/button", jobName.replaceAll(" ", "%20")))))
@@ -89,36 +88,10 @@ public class MainPage extends BaseMainHeaderPage<MainPage> {
         return new ConfigureGlobalSecurityPage(getDriver());
     }
 
-    public FolderPage clickFolderName(String folderName) {
-        WebElement folder = getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath(String.format("//a[@href='job/%s/']",folderName.replaceAll(" ","%20")))));
-        new Actions(getDriver()).moveToElement(folder).click(folder).perform();
-        return new FolderPage(getDriver());
-    }
-
-    public PipelinePage clickPipelineProject(String pipelineName) {
+    public <ProjectPage> ProjectPage clickJobProject(String pipelineName, ProjectPage projectPage) {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath(String.format("//a[@href='job/%s/']",pipelineName.replaceAll(" ","%20"))))).click();
-        return new PipelinePage(getDriver());
-    }
-
-    public FreestyleProjectPage clickFreestyleProjectName(String jobName) {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath(String.format("//a[@href='job/%s/']",jobName.replaceAll(" ","%20"))))).click();
-
-        return new FreestyleProjectPage(getDriver());
-    }
-
-    public MultiConfigurationProjectPage clickMultiConfigurationProjectName(String jobName) {
-        getWait5().until(ExpectedConditions.elementToBeClickable(getDriver()
-                .findElement(By.xpath(String.format("//a[@href='job/%s/']",jobName.replaceAll(" ","%20")))))).click();
-        return new MultiConfigurationProjectPage(getDriver());
-    }
-
-    public MultibranchPipelinePage clickMultibranchPipelineName(String multibranchPipeline) {
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath(String.format("//a[@href='job/%s/']",multibranchPipeline.replaceAll(" ","%20"))))).click();
-        return new MultibranchPipelinePage(getDriver());
+        return projectPage;
     }
 
     public MainPage dropDownMenuClickDelete(String jobName) {
@@ -159,15 +132,6 @@ public class MainPage extends BaseMainHeaderPage<MainPage> {
         openJobDropDownMenu(jobName);
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//div//li//span[contains(text(),'Configure')]"))).click();
         return new FreestyleProjectPage(getDriver());
-    }
-
-    public MultiConfigurationProjectPage clickJobMultiConfigurationProject(String jobName) {
-        openJobDropDownMenu(jobName);
-        WebElement job = getWait5().until(ExpectedConditions.elementToBeClickable(getDriver()
-                .findElement(By.xpath(String.format("//a[@href='job/%s/']",jobName.replaceAll(" ","%20"))))));
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(job).click(job).perform();
-        return new MultiConfigurationProjectPage(getDriver());
     }
 
     public String getJobBuildStatusIcon(String jobName) {
@@ -339,12 +303,6 @@ public class MainPage extends BaseMainHeaderPage<MainPage> {
         return buildStatusIcon.getAttribute("title");
 
     }
-
-   public OrganizationFolderPage clickJodOrganizationFolder(){
-        getDriver().findElement(By.xpath("//a[@class='jenkins-table__link model-link inside']")).click();
-
-        return new OrganizationFolderPage(getDriver());
-   }
 
     public MainPage selectFromJobDropdownMenuTheGitHub() {
         getDriver().findElement(By.xpath("//a[contains(@href, 'github.com')]")).click();

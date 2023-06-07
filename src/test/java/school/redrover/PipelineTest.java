@@ -64,7 +64,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .getHeader()
                 .clickLogo()
-                .clickPipelineProject(PIPELINE_NAME)
+                .clickJobProject(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickEditDescription()
                 .clearDescriptionField()
                 .enterNewDescription(newDescription)
@@ -130,7 +130,7 @@ public class PipelineTest extends BaseTest {
         final String newPipelineName = PIPELINE_NAME + "new";
 
         String projectName = new MainPage(getDriver())
-                .clickPipelineProject(PIPELINE_NAME)
+                .clickJobProject(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickRename()
                 .clearNameField()
                 .enterNewName(newPipelineName)
@@ -152,7 +152,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .getHeader()
                 .clickLogo()
-                .clickPipelineProject(PIPELINE_NAME)
+                .clickJobProject(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickDeletePipeline()
                 .acceptAlert();
 
@@ -193,7 +193,7 @@ public class PipelineTest extends BaseTest {
         BuildPage buildPage = new MainPage(getDriver())
                 .getHeader()
                 .clickLogo()
-                .clickPipelineProject(PIPELINE_NAME)
+                .clickJobProject(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickConfigureButton()
                 .clickPipelineLeftMenu()
                 .clickScriptDropDownMenu()
@@ -242,7 +242,7 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipeline(this, namePipeline, true);
 
         ConsoleOutputPage consoleOutputPage = new MainPage(getDriver())
-                .clickPipelineProject(namePipeline)
+                .clickJobProject(namePipeline, new PipelinePage(getDriver()))
                 .clickBuildNow()
                 .clickTrend()
                 .clickBuildIcon();
@@ -257,7 +257,7 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipeline(this, "Engineer", true);
 
         String text = new MainPage(getDriver())
-                .clickPipelineProject("Engineer")
+                .clickJobProject("Engineer", new PipelinePage(getDriver()))
                 .clickBuildNow()
                 .clickChangeOnLeftSideMenu()
                 .getTextOfPage();
@@ -277,7 +277,7 @@ public class PipelineTest extends BaseTest {
                 .selectPipelineAndOk()
                 .clickSaveButton()
                 .getHeader()
-                .clickLogo().clickPipelineProject(jobName)
+                .clickLogo().clickJobProject(jobName, new PipelinePage(getDriver()))
                 .clickBuildNow()
                 .clickBuildNow()
                 .clickBuildNow()
@@ -304,7 +304,7 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipeline(this, PIPELINE_NAME, true);
 
         String jobStatus = new MainPage(getDriver())
-                .clickPipelineProject(PIPELINE_NAME)
+                .clickJobProject(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickDisableProject()
                 .getHeader()
                 .clickLogo()
@@ -318,7 +318,7 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipeline(this, PIPELINE_NAME, true);
 
         String jobStatus = new MainPage(getDriver())
-                .clickPipelineProject(PIPELINE_NAME)
+                .clickJobProject(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickDisableProject()
                 .clickEnableProject()
                 .getHeader()
@@ -435,7 +435,7 @@ public class PipelineTest extends BaseTest {
         TestUtils.createPipeline(this, PIPELINE_NAME, true);
 
         String addDescription = new MainPage(getDriver())
-                .clickPipelineProject(PIPELINE_NAME)
+                .clickJobProject(PIPELINE_NAME, new PipelinePage(getDriver()))
                 .clickEditDescription()
                 .enterNewDescription(TEXT_DESCRIPTION)
                 .clickSaveButton()

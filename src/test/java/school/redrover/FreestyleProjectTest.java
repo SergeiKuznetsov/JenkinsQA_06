@@ -1,8 +1,6 @@
 package school.redrover;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Ignore;
@@ -272,7 +270,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveDescription()
                 .getHeader()
                 .clickLogo()
-                .clickFreestyleProjectName(FREESTYLE_NAME);
+                .clickJobProject(FREESTYLE_NAME, new FreestyleProjectPage(getDriver()));
 
         String projectNameFromViewPage = projectPage.getProjectName();
         String projectDescriptionFromViewPage = projectPage.getDescription();
@@ -307,7 +305,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickSaveButton()
                 .getHeader()
                 .clickLogo()
-                .clickFreestyleProjectName("Engineer")
+                .clickJobProject("Engineer", new FreestyleProjectPage(getDriver()))
                 .selectBuildNow()
                 .selectBuildItemTheHistoryOnBuildPage();
 
@@ -318,7 +316,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testPresenceOfBuildLinksAfterBuild() {
 
         MainPage mainPage = new MainPage(getDriver())
-                .clickFreestyleProjectName(FREESTYLE_NAME)
+                .clickJobProject(FREESTYLE_NAME, new FreestyleProjectPage(getDriver()))
                 .selectBuildNow()
                 .getHeader()
                 .clickDashboardButton();
@@ -326,7 +324,7 @@ public class FreestyleProjectTest extends BaseTest {
         Assert.assertEquals(mainPage.getTitleValueOfBuildStatusIconElement(), "Success");
 
         int sizeOfPermalinksList = mainPage
-                .clickFreestyleProjectName(FREESTYLE_NAME)
+                .clickJobProject(FREESTYLE_NAME, new FreestyleProjectPage(getDriver()))
                 .getSizeOfPermalinksList();
 
         Assert.assertTrue(sizeOfPermalinksList == 4);
@@ -381,7 +379,7 @@ public class FreestyleProjectTest extends BaseTest {
         final String projName = FREESTYLE_NAME + " New";
 
         boolean isProjectPresent = new MainPage(getDriver())
-                .clickFreestyleProjectName(projName)
+                .clickJobProject(projName, new FreestyleProjectPage(getDriver()))
                 .clickDeleteProject()
                 .verifyJobIsPresent(projName);
 

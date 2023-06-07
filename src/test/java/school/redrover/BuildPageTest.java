@@ -1,17 +1,14 @@
 package school.redrover;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import school.redrover.model.ConsoleOutputPage;
 import school.redrover.model.MainPage;
+import school.redrover.model.PipelinePage;
 import school.redrover.runner.BaseTest;
-import school.redrover.runner.TestUtils;
 
 public class BuildPageTest extends BaseTest {
 
@@ -44,7 +41,7 @@ public class BuildPageTest extends BaseTest {
                 .clickSaveButton()
                 .getHeader()
                 .clickLogo()
-                .clickPipelineProject(NAME_PIPELINE)
+                .clickJobProject(NAME_PIPELINE, new PipelinePage(getDriver()))
                 .clickEditDescription()
                 .enterNewDescription(BUILD_DESCRIPTION)
                 .clickSaveButton()
