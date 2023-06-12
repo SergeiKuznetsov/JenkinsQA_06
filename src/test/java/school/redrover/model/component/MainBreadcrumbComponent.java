@@ -17,7 +17,7 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
 
         return getWait5()
             .until(ExpectedConditions.visibilityOfElementLocated
-                    (By.xpath("//div[@id='breadcrumbBar']")))
+                (By.xpath("//div[@id='breadcrumbBar']")))
             .getText()
             .replaceAll("\\n", " > ")
             .trim()
@@ -86,7 +86,8 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
             .until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
                     "//div[@id='breadcrumb-menu']//span[text() = '%s']"
                     .formatted(optionText)))
-            ).click();
+            ).click()
+        ;
 
         return returnedPage;
 
