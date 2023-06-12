@@ -29,9 +29,9 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
 
         return this
             .getFullBreadcrumbPath()
-            .replaceAll("[^>]", "")
             .trim()
-            .length()
+            .split("\\s>\\s")
+            .length
             + 1
         ;
 
