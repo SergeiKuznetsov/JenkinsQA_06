@@ -81,6 +81,12 @@ public class ConfigureGlobalSecurityPage extends BaseMainHeaderPage<ConfigureGlo
         return new ConfigureGlobalSecurityPage(getDriver());
     }
 
+    public ManageJenkinsPage clickSaveButton() {
+        getDriver().findElement(By.xpath("//button[@name = 'Submit']")).click();
+
+        return new ManageJenkinsPage(getDriver());
+    }
+
     public String getSavedNotificationText() {
 
         return getWait2().until(ExpectedConditions.visibilityOfElementLocated((By.xpath("//div[@id='notification-bar']/span")))).getText();

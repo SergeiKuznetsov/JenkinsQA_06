@@ -9,6 +9,8 @@ import school.redrover.model.base.BaseComponent;
 import school.redrover.model.base.BaseMainHeaderPage;
 import school.redrover.model.base.BasePage;
 
+import java.util.List;
+
 public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseComponent<Page> {
 
     public MainBreadcrumbComponent(Page page) {
@@ -44,10 +46,10 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
     public WebElement getListItemOfBreadcrumb(String listItemName) {
 
         return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                By.xpath("//li[@class='jenkins-breadcrumbs__list-item']" +
-                        "/a[contains(text(), '" + listItemName + "')]"
+                        By.xpath("//li[@class='jenkins-breadcrumbs__list-item']" +
+                                "/a[contains(text(), '" + listItemName + "')]"
+                        )
                 )
-            )
         );
     }
 
@@ -63,6 +65,14 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
 
         return this;
 
+    }
+
+    public MainBreadcrumbComponent<?> openManageJenkinsSubDropdownMenu() {
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("#breadcrumb-menu a[href='/manage'] span")))).perform();
+
+        return this;
     }
 
     public <ReturnedPage extends BaseMainHeaderPage<?>> ReturnedPage clickBreadcrumbItem(String listItemName, ReturnedPage pageToReturn){
@@ -82,6 +92,14 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
         return pageToReturn;
 
     }
+
+    public <ReturnedPage extends BaseMainHeaderPage<?>> ReturnedPage clickManageJenkinsSubmenu(String optionInManageJenkinsSubmenu, ReturnedPage pageToReturn) {
+
+        getDriver().findElement(By.xpath(String.format("//span[text() = '%s']", optionInManageJenkinsSubmenu))).click();
+
+        return pageToReturn;
+    }
+
 
 }
 

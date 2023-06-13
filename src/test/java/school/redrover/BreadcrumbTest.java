@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import school.redrover.model.ConfigureGlobalSecurityPage;
 import school.redrover.model.MainPage;
 import school.redrover.model.ManageJenkinsPage;
 import school.redrover.runner.BaseTest;
@@ -59,7 +60,7 @@ public class BreadcrumbTest extends BaseTest {
         getWait5().until(ExpectedConditions.visibilityOfElementLocated(sectionNameLocator));
         new Actions(getDriver()).moveToElement(getDriver().findElement(sectionNameLocator)).perform();
 
-        if (locator.contains("@class='yuimenuitemlabel'")||
+        if (locator.contains("@class='yuimenuitemlabel'") ||
                 locator.contains("/cli") || locator.contains("/script") || locator.contains("/prepareShutdown")) {
             new Actions(getDriver()).sendKeys(Keys.ARROW_RIGHT).perform();
             for (int i = 0; i < 16; i++) {
@@ -71,7 +72,7 @@ public class BreadcrumbTest extends BaseTest {
         WebElement subSection = getDriver().findElement(subsectionNameLocator);
         subSection.click();
 
-        if (locator.contains("@class='yuimenuitemlabel'")){
+        if (locator.contains("@class='yuimenuitemlabel'")) {
             Alert alert = getWait5().until(ExpectedConditions.alertIsPresent());
             String text = alert.getText();
             alert.dismiss();
@@ -80,5 +81,19 @@ public class BreadcrumbTest extends BaseTest {
             getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.tagName("h1")));
             Assert.assertEquals(getDriver().findElement(By.tagName("h1")).getText(), subsectionName);
         }
+    }
+
+    @Test
+    public void testNavigateToManageJenkinsSubsection1() {
+
+        new MainPage(getDriver())
+                .getBreadcrumb()
+                .openDropdownMenuOfListItem("Dashboard")
+                .openManageJenkinsSubDropdownMenu()
+                .clickManageJenkinsSubmenu("Configure Global Security", new ConfigureGlobalSecurityPage(getDriver()));
+//                .clickSaveButton();
+
+        Assert.assertEquals(getDriver().getTitle(), "Configure Global Security [Jenkins]");
+        Assert.assertEquals(getDriver().getCurrentUrl().substring(21), "/manage/configureSecurity/");
     }
 }
