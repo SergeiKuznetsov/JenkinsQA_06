@@ -1,5 +1,6 @@
 package school.redrover.model.base;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -179,8 +180,10 @@ public abstract class BaseConfigProjectsPage<Self extends BaseConfigPage<?, ?>, 
     }
 
     public Self openAddParameterDropDown() {
+        getWait5().until(ExpectedConditions.elementToBeClickable(addParametersDropDown));
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("arguments[0].scrollIntoView();", projectIsParametrizedCheckBox);
+        js.executeScript("arguments[0].scrollIntoView();",
+                getWait5().until(ExpectedConditions.elementToBeClickable(projectIsParametrizedCheckBox)));
         addParametersDropDown.click();
 
         return (Self) this;
