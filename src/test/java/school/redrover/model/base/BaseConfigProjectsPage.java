@@ -1,9 +1,9 @@
 package school.redrover.model.base;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.CreateItemErrorPage;
 import school.redrover.runner.TestUtils;
@@ -12,101 +12,147 @@ import java.util.List;
 
 public abstract class BaseConfigProjectsPage<Self extends BaseConfigPage<?, ?>, ProjectPage extends BaseMainHeaderPage<?>> extends BaseConfigPage<Self, ProjectPage> {
 
+    @FindBy(xpath = "//button[contains(text(), 'Add build step')]")
+    private WebElement addBuildStepDropDown;
+
+    @FindBy(xpath = "//button[contains(text(), 'Add post-build action')]")
+    private WebElement addPostBuildActionDropDown;
+
+    @FindBy(xpath = "//a[contains(text(), 'Execute shell')]")
+    private WebElement executeShellOption;
+
+    @FindBy(xpath = "//div[@class='CodeMirror']")
+    private WebElement executeShellCommandField;
+    @FindBy(xpath = "//div[@class='CodeMirror']//textarea")
+    private WebElement executeShellCommandTextArea;
+
+    @FindBy(className = "CodeMirror-lines")
+    private List<WebElement> executeShellCodeLines;
+
+    @FindBy(xpath = "//span[@class='jenkins-checkbox']//input[@id='cb4']")
+    private WebElement discardOldBuildsCheckBox;
+
+    @FindBy(xpath = "//input[@name='_.daysToKeepStr']")
+    private WebElement daysToKeepBuildsField;
+
+    @FindBy(xpath = "//div[text()='Days to keep builds']")
+    private WebElement daysToKeepBuildsFieldName;
+
+    @FindBy(xpath = "//input[@name='_.numToKeepStr']")
+    private WebElement maxNumOfBuildsToKeepField;
+
+    @FindBy(xpath = "//span[text() = 'Enabled']")
+    private WebElement disableJobSwitch;
+
+    @FindBy(xpath = "//label[@for='enable-disable-project']")
+    private WebElement enableJobSwitch;
+
+    @FindBy(xpath = "//label[text()='GitHub project']")
+    private WebElement gitHubProjectCheckBox;
+
+    @FindBy(css = "[name='_.projectUrlStr']")
+    private WebElement gitHubProjectUrlField;
+
+    @FindBy(xpath = "//label[text()='This project is parameterized']")
+    private WebElement projectIsParametrizedCheckBox;
+
+    @FindBy(xpath = "//button[@class='hetero-list-add']")
+    private WebElement addParametersDropDown;
+
+    @FindBy(xpath = "//div[@id='yui-gen6']//li/a")
+    private List<WebElement> addParameterDropDownOptions;
+
+    @FindBy(xpath = "//input[@name='parameter.name']")
+    private WebElement parameterNameField;
+
+    @FindBy(xpath = "//textarea[@name='parameter.choices']")
+    private WebElement parameterChoicesField;
+
+    @FindBy(xpath = "//textarea[@name='parameter.description']")
+    private WebElement parameterDescriptionField;
+
+    @FindBy(xpath = "//label[normalize-space(text())='Set by Default']")
+    private WebElement setByDefaultCheckBox;
+
+    @FindBy(xpath = "//div[div[@id='build-steps']]//li/a")
+    private List<WebElement> addBuildStepDropDownOptions;
+
     public BaseConfigProjectsPage(ProjectPage projectPage) {
         super(projectPage);
     }
 
     public Self addExecuteShellBuildStep(String command) {
-        WebElement buildStep = getWait5().until(ExpectedConditions.elementToBeClickable(
-                By.xpath("//button[contains(text(), 'Add build step')]")));
-
+        getWait5().until(ExpectedConditions.elementToBeClickable(addBuildStepDropDown));
         Actions actions = new Actions(getDriver());
-        actions.scrollToElement(getDriver().findElement(By.xpath("//button[contains(text(), 'Add post-build action')]"))).click().perform();
+        actions.scrollToElement(addPostBuildActionDropDown).click().perform();
+        getWait2().until(ExpectedConditions.elementToBeClickable(addBuildStepDropDown)).click();
 
-        getWait2().until(ExpectedConditions.elementToBeClickable(buildStep)).click();
-
-        WebElement executeShell = getDriver().findElement(By.xpath("//a[contains(text(), 'Execute shell')]"));
-        executeShell.click();
-
-        WebElement codeMirror = getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.className("CodeMirror")));
-        actions.scrollToElement(getDriver().findElement(By.xpath("//button[contains(text(), 'Add post-build action')]"))).click().perform();
-        WebElement codeLine = codeMirror.findElements(By.className("CodeMirror-lines")).get(0);
-        codeLine.click();
-        WebElement commandField = codeMirror.findElement(By.cssSelector("textarea"));
-        commandField.sendKeys(command);
+        executeShellOption.click();
+        getWait5().until(ExpectedConditions.visibilityOf(executeShellCommandField));
+        actions.scrollToElement(addPostBuildActionDropDown).click().perform();
+        executeShellCodeLines.get(0).click();
+        executeShellCommandTextArea.sendKeys(command);
 
         return (Self) this;
     }
 
     public Self clickOldBuildCheckBox() {
-        TestUtils.clickByJavaScript(this, getDriver()
-                .findElement(By.xpath("//span[@class='jenkins-checkbox']//input[@id='cb4']")));
+        TestUtils.clickByJavaScript(this, discardOldBuildsCheckBox);
 
         return (Self) this;
     }
 
     public Self enterDaysToKeepBuilds(int number) {
-        WebElement daysToKeepBuilds = getDriver()
-                .findElement(By.xpath("//input[@name='_.daysToKeepStr']"));
-        WebElement nameFieldDaysToKeepBuilds = getDriver().findElement(By.xpath("//div[text()='Days to keep builds']"));
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("arguments[0].scrollIntoView();", nameFieldDaysToKeepBuilds);
-        TestUtils.sendTextToInput(this, daysToKeepBuilds, String.valueOf(number));
+        js.executeScript("arguments[0].scrollIntoView();", daysToKeepBuildsFieldName);
+        TestUtils.sendTextToInput(this, daysToKeepBuildsField, String.valueOf(number));
 
         return (Self) this;
     }
 
     public Self enterMaxNumOfBuildsToKeep(int number) {
-        WebElement maxNumOfBuildsToKeepNumber = getDriver()
-                .findElement(By.xpath("//input[@name='_.numToKeepStr']"));
-        TestUtils.sendTextToInput(this, maxNumOfBuildsToKeepNumber, String.valueOf(number));
+        TestUtils.sendTextToInput(this, maxNumOfBuildsToKeepField, String.valueOf(number));
 
         return (Self) this;
     }
 
     public Self switchCheckboxDisable() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath("//span[text() = 'Enabled']")))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(disableJobSwitch)).click();
+
         return (Self) this;
     }
 
     public Self switchCheckboxEnabled() {
-        getWait2().until(ExpectedConditions.elementToBeClickable(getDriver().findElement(By.xpath("//label[@for='enable-disable-project']")))).click();
+        getWait2().until(ExpectedConditions.elementToBeClickable(enableJobSwitch)).click();
+
         return (Self) this;
     }
 
     public String getTextDisable() {
-
-        return getWait5().until(ExpectedConditions.elementToBeClickable
-                (getDriver().findElement(By.xpath("//span[text() = 'Disabled']")))).getText();
+        return getWait5().until(ExpectedConditions.elementToBeClickable(enableJobSwitch)).getText();
     }
 
     public String getTextEnabled() {
-
-        return getWait5().until(ExpectedConditions.elementToBeClickable
-                (getDriver().findElement(By.xpath("//span[text() = 'Enabled']")))).getText();
+        return getWait5().until(ExpectedConditions.elementToBeClickable(disableJobSwitch)).getText();
     }
 
     public String getDaysToKeepBuilds(String attribute) {
-        WebElement daysToKeepBuilds = getDriver()
-                .findElement(By.xpath("//input[@name='_.daysToKeepStr']"));
-
-        return daysToKeepBuilds.getAttribute(attribute);
+        return daysToKeepBuildsField.getAttribute(attribute);
     }
 
     public String getMaxNumOfBuildsToKeep(String attribute) {
-        WebElement maxNumOfBuildsToKeepNumber = getDriver()
-                .findElement(By.xpath("//input[@name='_.numToKeepStr']"));
-
-        return maxNumOfBuildsToKeepNumber.getAttribute(attribute);
+        return maxNumOfBuildsToKeepField.getAttribute(attribute);
     }
 
     public Self clickGitHubProjectCheckbox() {
-        getDriver().findElement(By.xpath("//label[text()='GitHub project']")).click();
+        gitHubProjectCheckBox.click();
+
         return (Self) this;
     }
 
-    public Self inputTextTheInputAreaProjectUrlInGitHubProject(String text) {
-        getDriver().findElement(By.cssSelector("[name='_.projectUrlStr']")).sendKeys(text);
+    public Self inputGitHubProjectUrl(String text) {
+        gitHubProjectUrlField.sendKeys(text);
+
         return (Self) this;
     }
 
@@ -115,60 +161,66 @@ public abstract class BaseConfigProjectsPage<Self extends BaseConfigPage<?, ?>, 
     }
 
     public Self checkProjectIsParametrized() {
-        WebElement projectIsParametrized = getWait5().until(ExpectedConditions.elementToBeClickable(By
-                .xpath("//label[text()='This project is parameterized']")));
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("arguments[0].click();", projectIsParametrized);
+        js.executeScript("arguments[0].click();", projectIsParametrizedCheckBox);
+
         return (Self) this;
     }
 
     public Self selectParameterInDropDownByType(String type) {
-        getDriver().findElement(By.xpath(String.format("//li/a[text()='%s']", type))).click();
+        for (WebElement element : addParameterDropDownOptions) {
+            if (element.getText().contains(type)) {
+                element.click();
+                break;
+            }
+        }
+
         return (Self) this;
     }
 
     public Self openAddParameterDropDown() {
-        WebElement addParameter = getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@class='hetero-list-add']")));
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        WebElement projectIsParametrized = getWait5().until(ExpectedConditions.elementToBeClickable(By
-                .xpath("//label[text()='This project is parameterized']")));
-        js.executeScript("arguments[0].scrollIntoView();", projectIsParametrized);
-        addParameter.click();
+        js.executeScript("arguments[0].scrollIntoView();", projectIsParametrizedCheckBox);
+        addParametersDropDown.click();
+
         return (Self) this;
     }
 
     public Self inputParameterName(String name) {
-        getDriver().findElement(By.xpath("//input[@name='parameter.name']")).sendKeys(name);
+        parameterNameField.sendKeys(name);
+
         return (Self) this;
     }
 
     public Self inputParameterChoices(List<String> parameterChoices) {
         for (String element : parameterChoices) {
-            getDriver().findElement(By.xpath("//textarea[@name='parameter.choices']")).sendKeys(element + "\n");
+            parameterChoicesField.sendKeys(element + "\n");
         }
+
         return (Self) this;
     }
 
-    public Self inputParameterDesc(String description) {
-        getDriver().findElement(By.xpath("//textarea[@name='parameter.description']")).sendKeys(description);
+    public Self inputParameterDescription(String description) {
+        parameterDescriptionField.sendKeys(description);
+
         return (Self) this;
     }
 
     public Self selectCheckboxSetByDefault() {
-        WebElement checkboxSetByDefault = getDriver().findElement(By.xpath("//label[normalize-space(text())='Set by Default']"));
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("arguments[0].click();", checkboxSetByDefault);
+        js.executeScript("arguments[0].click();", setByDefaultCheckBox);
+
         return (Self) this;
     }
 
     public Self openBuildStepOptionsDropdown() {
-        WebElement addBuildStepButton = getDriver().findElement(By.xpath("//button[text()='Add build step']"));
-        TestUtils.scrollToElementByJavaScript(this, addBuildStepButton);
-        getWait5().until(ExpectedConditions.elementToBeClickable(addBuildStepButton)).click();
+        TestUtils.scrollToElementByJavaScript(this, addBuildStepDropDown);
+        getWait5().until(ExpectedConditions.elementToBeClickable(addBuildStepDropDown)).click();
+
         return (Self) this;
     }
 
     public List<String> getOptionsInBuildStepDropdown() {
-        return TestUtils.getTexts(getDriver().findElements(By.xpath("//button[text()='Add build step']/../../..//a"))) ;
+        return TestUtils.getTexts(addBuildStepDropDownOptions);
     }
 }

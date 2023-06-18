@@ -389,7 +389,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickJobName(NEW_FREESTYLE_NAME, new FreestyleProjectPage(getDriver()))
                 .clickConfigure()
                 .clickGitHubProjectCheckbox()
-                .inputTextTheInputAreaProjectUrlInGitHubProject(gitHubUrl)
+                .inputGitHubProjectUrl(gitHubUrl)
                 .clickSaveButton()
                 .getHeader()
                 .clickLogo()
@@ -439,7 +439,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .selectParameterInDropDownByType(parameterType)
                 .inputParameterName(parameterName)
                 .inputParameterChoices(parameterChoicesList)
-                .inputParameterDesc(parameterDesc)
+                .inputParameterDescription(parameterDesc)
                 .clickSaveButton()
                 .clickBuildWithParameters();
 

@@ -583,7 +583,7 @@ public class PipelineTest extends BaseTest {
                 .clickJobName(NAME, new PipelinePage(getDriver()))
                 .clickConfigure()
                 .clickGitHubProjectCheckbox()
-                .inputTextTheInputAreaProjectUrlInGitHubProject(gitHubUrl)
+                .inputGitHubProjectUrl(gitHubUrl)
                 .clickSaveButton()
                 .getHeader()
                 .clickLogo()

@@ -422,7 +422,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickJobName(NAME, new MultiConfigurationProjectPage(getDriver()))
                 .clickConfigure()
                 .clickGitHubProjectCheckbox()
-                .inputTextTheInputAreaProjectUrlInGitHubProject(gitHubUrl)
+                .inputGitHubProjectUrl(gitHubUrl)
                 .clickSaveButton()
                 .getHeader()
                 .clickLogo()
