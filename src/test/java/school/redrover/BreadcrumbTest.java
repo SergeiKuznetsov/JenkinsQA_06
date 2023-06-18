@@ -15,9 +15,11 @@ import java.util.List;
 
 public class BreadcrumbTest extends BaseTest {
     @Test
-    public void testNavigateToManageJenkinsSection() {
+    public void testNavigateToManageJenkinsSection() throws InterruptedException {
         ManageJenkinsPage manageJenkinsPage = new MainPage(getDriver())
-                .clickManageJenkinsOnDropDown();
+                .getBreadcrumb()
+                .clickDropdownOption("Manage Jenkins", new ManageJenkinsPage(getDriver()));
+//                .clickManageJenkinsOnDropDown();
 
         Assert.assertEquals(manageJenkinsPage.getActualHeader(), "Manage Jenkins");
     }
