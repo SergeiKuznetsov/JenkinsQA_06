@@ -97,6 +97,12 @@ public class MainHeaderComponent<Page extends BasePage<?, ?>> extends BaseCompon
         return logoutLink.getCssValue("color");
     }
 
+    public ManageJenkinsPage clickManageLinkFromPopUp(){
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(text(),'Manage Jenkins')]"))).click();
+
+        return new ManageJenkinsPage(getDriver());
+    }
+
     public boolean openBuildsTabFromAdminDropdownMenuIsDisplayed () {
         getWait5().until(ExpectedConditions.elementToBeClickable(By.xpath
                 ("//div[@id='breadcrumb-menu']//span[.='Builds']"))).click();
@@ -171,5 +177,62 @@ public class MainHeaderComponent<Page extends BasePage<?, ?>> extends BaseCompon
             }
         }
         return true;
+    }
+
+    public String getTextFromHeaderManageJenkins(){
+
+        return getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#visible-am-list > p > a"))).getText();
+    }
+
+    public boolean getSecurityButtonOnHeader(){
+
+        return getDriver().findElement(By.cssSelector("#visible-sec-am-button > svg")).isDisplayed();
+    }
+
+    public String getBackgroundSecurityButton(){
+        WebElement securityButton = getDriver()
+                .findElement(By.xpath("//*[@id=\"visible-sec-am-button\"]"));
+
+        Actions hover = new Actions(getDriver());
+        hover.moveToElement(securityButton).perform();
+
+        return securityButton.getCssValue("background-color");
+    }
+
+    public boolean iconExitButton(){
+
+        return getDriver()
+                .findElement(By.cssSelector("#page-header > div.login.page-header__hyperlinks > a:nth-child(4) > svg"))
+                .isDisplayed();
+    }
+
+    public String getUnderLineExitButton(){
+        WebElement exitButton = getDriver().findElement(By.xpath("//*[@id=\"page-header\"]/div[3]/a[2]"));
+
+        Actions hover = new Actions(getDriver());
+        hover.moveToElement(exitButton).perform();
+
+        return exitButton.getCssValue("text-decoration-line");
+    }
+
+    public String getBackgroundExitButton(){
+        WebElement exitButton = getDriver().findElement(By.xpath("//*[@id=\"page-header\"]/div[3]/a[2]"));
+
+        Actions hover = new Actions(getDriver());
+        hover.moveToElement(exitButton).perform();
+
+        return exitButton.getCssValue("background-color");
+    }
+
+    public LoginPage clickLogOUTButton(){
+        getDriver().findElement(By.xpath("//a[@href='/logout']")).click();
+
+        return new LoginPage(getDriver());
+    }
+
+    public AdminPage clickOnAdminButton() {
+        getWait2().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@href='/user/admin']"))).click();
+
+        return new AdminPage(getDriver());
     }
 }
