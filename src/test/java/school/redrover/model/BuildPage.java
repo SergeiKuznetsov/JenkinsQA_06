@@ -84,4 +84,10 @@ public class BuildPage extends BaseMainHeaderPage<BuildPage> {
         }
         return false;
     }
+
+    public ConsoleOutputPage openConsoleOutputForBuild(String jobName, int buildNumber) {
+        getWait5().until(ExpectedConditions.elementToBeClickable(
+                By.xpath("//a[contains(@href,'/" + jobName + "/" + buildNumber + "/console')]"))).click();
+        return new ConsoleOutputPage(getDriver());
+    }
 }

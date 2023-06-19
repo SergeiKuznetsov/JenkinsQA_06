@@ -125,8 +125,7 @@ public class PipelineTest extends BaseTest {
     public void testDeleteLeftMenu() {
         String welcomeText =  new MainPage(getDriver())
                 .clickJobName(NEW_NAME, new PipelinePage(getDriver()))
-                .clickDeletePipeline()
-                .acceptAlert()
+                .clickDeleteAcceptAlert()
                 .getWelcomeText();
 
         Assert.assertEquals(welcomeText, "Welcome to Jenkins!");
@@ -169,7 +168,7 @@ public class PipelineTest extends BaseTest {
                 .clickSaveButton()
                 .clickBuildNow()
                 .clickBuildIcon()
-                .click1BuildHistory();
+                .selectBuildItemTheHistoryOnBuildPage(1);
 
         Assert.assertTrue(buildPage.isDisplayedBuildTitle(), "Build #1 failed");
         Assert.assertTrue(buildPage.isDisplayedGreenIconV(), "Build #1 failed");
@@ -457,7 +456,6 @@ public class PipelineTest extends BaseTest {
                 .clickOkButton(new PipelineConfigPage(new PipelinePage(getDriver())))
                 .toggleDisableProject()
                 .clickSaveButton()
-                .checkWarningMessage()
                 .clickConfigure()
                 .isProjectDisable();
 

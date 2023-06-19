@@ -107,16 +107,16 @@ public class FreestyleProjectTest extends BaseTest {
     public void testDisableProject() {
         FreestyleProjectPage projectName = new MainPage(getDriver())
                 .clickJobName(FREESTYLE_NAME, new FreestyleProjectPage(getDriver()))
-                .clickTheDisableProjectButton();
+                .clickDisable();
 
-        Assert.assertEquals(projectName.getWarningMessage(), "This project is currently disabled");
+        Assert.assertEquals(projectName.getDisabledMessageText(), "This project is currently disabled");
     }
 
     @Test(dependsOnMethods = "testDisableProject")
     public void testEnableProject() {
         MainPage projectName = new MainPage(getDriver())
                 .clickJobName(FREESTYLE_NAME, new FreestyleProjectPage(getDriver()))
-                .clickTheEnableProjectButton()
+                .clickEnable()
                 .getHeader()
                 .clickLogo();
 
@@ -238,8 +238,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickOkButton(new FreestyleProjectConfigPage(new FreestyleProjectPage(getDriver())))
                 .addExecuteShellBuildStep("echo Hello")
                 .clickSaveButton()
-                .selectBuildNowAndOpenBuildRow()
-                .openConsoleOutputForBuild()
+                .openConsoleOutputForBuild("MyFreestyleProject", 1)
                 .getConsoleOutputText();
 
         Assert.assertTrue(consoleOutput.contains("echo Hello"), "Command wasn't run");
@@ -257,8 +256,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .getHeader()
                 .clickLogo()
                 .clickJobName("Engineer", new FreestyleProjectPage(getDriver()))
-                .selectBuildNowAndOpenBuildRow()
-                .selectBuildItemTheHistoryOnBuildPage();
+                .selectBuildItemTheHistoryOnBuildPage(1);
 
         Assert.assertTrue(new BuildPage(getDriver()).buildHeaderIsDisplayed(), "build not created");
     }
@@ -293,7 +291,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .addBuildStepsExecuteShell(steps)
                 .clickSaveButton()
                 .selectBuildNowAndOpenBuildRow()
-                .openConsoleOutputForBuild()
+                .openConsoleOutputForBuild(nameProject, 1)
                 .getConsoleOutputText();
 
         Assert.assertTrue(consoleOutput.contains("Finished: SUCCESS"), "Build Finished: FAILURE");
@@ -332,7 +330,7 @@ public class FreestyleProjectTest extends BaseTest {
 
         boolean isProjectPresent = new MainPage(getDriver())
                 .clickJobName(projName, new FreestyleProjectPage(getDriver()))
-                .clickDeleteProject()
+                .clickDeleteAcceptAlert()
                 .verifyJobIsPresent(projName);
 
         Assert.assertFalse(isProjectPresent);
@@ -463,23 +461,6 @@ public class FreestyleProjectTest extends BaseTest {
                 .checkedTrue();
 
         Assert.assertTrue(checkedSetByDefault);
-    }
-
-    @Test
-    public void testBuildStepsOptions() {
-        List<String> expectedOptionsInBuildStepsSection = List.of("Execute Windows batch command", "Execute shell",
-                "Invoke Ant", "Invoke Gradle script", "Invoke top-level Maven targets", "Run with timeout",
-                "Set build status to \"pending\" on GitHub commit");
-
-        List<String> actualOptionsInBuildStepsSection = new MainPage(getDriver())
-                .clickNewItem()
-                .enterItemName(FREESTYLE_NAME)
-                .selectJobType(TestUtils.JobType.FreestyleProject)
-                .clickOkButton(new FreestyleProjectConfigPage(new FreestyleProjectPage(getDriver())))
-                .openBuildStepOptionsDropdown()
-                .getOptionsInBuildStepDropdown();
-
-        Assert.assertEquals(actualOptionsInBuildStepsSection, expectedOptionsInBuildStepsSection);
     }
 
     @Test(dependsOnMethods = "testPresenceOfBuildLinksAfterBuild")

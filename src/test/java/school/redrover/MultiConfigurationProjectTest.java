@@ -169,7 +169,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
         String jobBuildStatus = new MainPage(getDriver())
                 .clickJobDropdownMenuBuildNow(NAME)
                 .clickJobName(NAME, new MultiConfigurationProjectPage(getDriver()))
-                .getJobBuildStatus(NAME);
+                .getJobBuildStatus();
 
         Assert.assertEquals(jobBuildStatus, "Success");
     }
@@ -268,7 +268,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     public void testProjectPageDelete() {
         MainPage deletedProjPage = new MainPage(getDriver())
                 .clickJobName(NAME, new MultiConfigurationProjectPage(getDriver()))
-                .clickDeleteAndAlert();
+                .clickDeleteAcceptAlert();
 
         Assert.assertEquals(deletedProjPage.getTitle(), "Dashboard [Jenkins]");
 

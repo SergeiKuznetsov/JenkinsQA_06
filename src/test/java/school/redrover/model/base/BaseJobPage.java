@@ -22,9 +22,6 @@ public abstract class BaseJobPage<Self extends BaseJobPage<?>> extends BaseMainH
     @FindBy(linkText = "Rename")
     private WebElement renameButton;
 
-    @FindBy(partialLinkText = "Delete ")
-    private WebElement deleteButton;
-
     @FindBy(xpath = "//a[@id='description-link']")
     private WebElement editDescriptionButton;
 
@@ -57,13 +54,6 @@ public abstract class BaseJobPage<Self extends BaseJobPage<?>> extends BaseMainH
     public RenamePage<Self> clickRename() {
         renameButton.click();
         return new RenamePage<>((Self) this);
-    }
-
-    public MainPage clickDeleteAndAlert() {
-        deleteButton.click();
-        getDriver().switchTo().alert().accept();
-        getDriver().manage().timeouts().pageLoadTimeout(Duration.ofSeconds(2));
-        return new MainPage(getDriver());
     }
 
     public Self clickEditDescription() {
