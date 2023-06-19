@@ -143,7 +143,7 @@ public abstract class BaseProjectPage<Self extends BaseProjectPage<?>> extends B
     }
 
     public BuildPage selectBuildWitchParametersAndSubmitAndOpenBuildRow() {
-        clickBuildNow();
+        clickBuildWithParameters();
         buildButton.click();
         getWait10().until(ExpectedConditions
                 .elementToBeClickable(buildRowCell));

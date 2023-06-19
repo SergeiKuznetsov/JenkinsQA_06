@@ -45,7 +45,7 @@ public class ConsoleOutputPage extends BaseMainHeaderPage<ConsoleOutputPage> {
     }
 
     public boolean isDisplayedGreenIconV() {
-        return getWait2().until(ExpectedConditions.visibilityOf(greenIconV)).isDisplayed();
+        return getWait5().until(ExpectedConditions.visibilityOf(greenIconV)).isDisplayed();
     }
 
     public boolean isDisplayedBuildTitle() {

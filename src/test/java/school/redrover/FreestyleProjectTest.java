@@ -267,7 +267,7 @@ public class FreestyleProjectTest extends BaseTest {
     public void testPresenceOfBuildLinksAfterBuild() {
         MainPage mainPage = new MainPage(getDriver())
                 .clickJobName(NEW_FREESTYLE_NAME, new FreestyleProjectPage(getDriver()))
-                .selectBuildWitchParametersAndSubmitAndOpenBuildRow()
+                .clickBuildWithParameters()
                 .getBreadcrumb()
                 .clickDashboardButton();
 
