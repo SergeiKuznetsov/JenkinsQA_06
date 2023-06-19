@@ -88,7 +88,8 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
         getDashboardDropdownMenu();
 
         new Actions(getDriver())
-                .moveToElement(getDriver().findElement(By.xpath("//a[contains(span, 'Manage Jenkins')]")))
+                .moveToElement(getDriver().findElement(By
+                        .xpath("//span[contains(text(), 'Manage Jenkins')]")))
                 .pause(500)
                 .moveToElement(getDriver().findElement(By.xpath("//span[contains(text(), '" + menuItem + "')]")))
                 .click()
@@ -107,7 +108,8 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
     }
 
     public MainBreadcrumbComponent<?> moveToManageJenkinsLink() {
-        new Actions(getDriver()).moveToElement(getDriver().findElement(By.cssSelector("#breadcrumb-menu a[href='/manage'] span"))).perform();
+        new Actions(getDriver()).moveToElement(getDriver().findElement(By
+                .cssSelector("#breadcrumb-menu a[href='/manage'] span"))).perform();
         return this;
     }
 

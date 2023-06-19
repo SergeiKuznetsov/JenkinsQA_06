@@ -93,8 +93,8 @@ public class BreadcrumbTest extends BaseTest {
     @Test
     public void testMoveFromPeoplePageToPluginsPageByDropDownMenu() {
         String actualTitle = new MainPage(getDriver())
-                .clickPeopleOnLeftSideMenu()
                 .getBreadcrumb()
+                .getDashboardDropdownMenu()
                 .selectAnOptionFromDashboardManageJenkinsSubmenuList("Manage Plugins", new PluginsPage(getDriver()))
                 .getPageTitle();
 
@@ -106,6 +106,7 @@ public class BreadcrumbTest extends BaseTest {
 
         String actualResult = new MainPage(getDriver())
                         .getBreadcrumb()
+                        .getDashboardDropdownMenu()
                         .selectAnOptionFromDashboardManageJenkinsSubmenuList("Manage Plugins", new PluginsPage(getDriver()))
                         .getPageTitle();
 
@@ -115,7 +116,6 @@ public class BreadcrumbTest extends BaseTest {
     @Test
     public void testMoveFromBuildHistoryPageToPeoplePageByDropDownMenu() {
         String actualTitle = new MainPage(getDriver())
-                .clickBuildsHistoryButton()
                 .getBreadcrumb()
                 .getDashboardDropdownMenu()
                 .clickDropdownOption("People", new PeoplePage(getDriver()))
