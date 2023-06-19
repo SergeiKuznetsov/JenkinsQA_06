@@ -41,10 +41,10 @@ public class CreateUserPage extends BaseMainHeaderPage<CreateUserPage> {
         return this;
     }
 
-    public ManageUsersPage clickCreateUserButton() {
+    public UserPage clickCreateUserButton() {
         getDriver().findElement(By.name("Submit")).click();
 
-        return new ManageUsersPage(getDriver());
+        return new UserPage(getDriver());
     }
 
     public CreateUserPage fillUserDetails(String username, String password, String fullName, String email) {

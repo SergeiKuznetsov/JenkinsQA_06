@@ -86,9 +86,9 @@ public class ManageJenkinsPage extends BaseMainHeaderPage<ManageJenkinsPage> {
         return searchResultsIsVisible.getText();
     }
 
-    public ManageUsersPage clickManageUsers() {
+    public UserPage clickManageUsers() {
         getWait2().until(ExpectedConditions.elementToBeClickable(manageUsersLink)).click();
-        return new ManageUsersPage(getDriver());
+        return new UserPage(getDriver());
     }
 
     public String getActualHeader() {
