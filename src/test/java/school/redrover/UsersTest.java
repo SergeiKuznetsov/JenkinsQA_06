@@ -64,10 +64,8 @@ public class UsersTest extends BaseTest {
     }
 
 
-    @Test
+    @Test(dependsOnMethods = "testCreateNewUser")
     public void testErrorWhenCreateDuplicatedUser() {
-        TestUtils.createUserAndReturnToMainPage(this, USER_NAME, PASSWORD, USER_FULL_NAME, EMAIL);
-
         String errorDuplicatedUser = new MainPage(getDriver())
                 .clickManageJenkinsPage()
                 .clickManageUsers()
@@ -225,10 +223,8 @@ public class UsersTest extends BaseTest {
         Assert.assertTrue(userIDButtonNotContainsArrow, "UserID button has sort arrow");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testErrorWhenCreateDuplicatedUser")
     public void testSearchPeople() {
-        TestUtils.createUserAndReturnToMainPage(this, USER_NAME, PASSWORD, USER_FULL_NAME, EMAIL);
-
         WebElement searchField = getDriver().findElement(
                 By.xpath("//input[@name='q']"));
         searchField.sendKeys(USER_NAME);
@@ -257,7 +253,7 @@ public class UsersTest extends BaseTest {
         Assert.assertTrue(isUserDeleted);
     }
 
-    @Test(dependsOnMethods = "testCreateNewUser")
+    @Test(dependsOnMethods = "testCreateUserCheckInManageUsers")
     public void testDeleteUserViaManageUsersByDeleteButton() {
         boolean userNotFound = new MainPage(getDriver())
                 .clickManageJenkinsPage()
@@ -282,11 +278,9 @@ public class UsersTest extends BaseTest {
                 "Invalid username or password");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testSearchPeople")
     public void testUserCanLoginToJenkinsWithCreatedAccount() {
         String nameProject = "Engineer";
-
-        TestUtils.createUserAndReturnToMainPage(this, USER_NAME, PASSWORD, USER_FULL_NAME, EMAIL);
 
         new MainPage(getDriver())
                 .getHeader()
@@ -345,13 +339,11 @@ public class UsersTest extends BaseTest {
         Assert.assertEquals(actualTextAlertIncorrectUsernameAndPassword, EXPECTED_TEXT_ALERT_INCORRECT_LOGIN_AND_PASSWORD);
     }
   
-    @Test
+    @Test(dependsOnMethods = "testUserCanLoginToJenkinsWithCreatedAccount")
     public void testCreateUserFromManageUser() {
 
         final String expectedResultTitle = "Dashboard [Jenkins]";
         final String expectedResultNameButton = USER_FULL_NAME;
-
-        TestUtils.createUserAndReturnToMainPage(this, USER_NAME, PASSWORD, USER_FULL_NAME, EMAIL);
 
         new MainPage(getDriver())
                 .getHeader()
@@ -371,12 +363,10 @@ public class UsersTest extends BaseTest {
         Assert.assertEquals(actualResultNameButton, expectedResultNameButton);
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateUserFromManageUser")
     public void testCreateUserCheckInPeople() {
 
         final String expectedResultTitle = "People - [Jenkins]";
-
-        TestUtils.createUserAndReturnToMainPage(this, USER_NAME, PASSWORD, USER_FULL_NAME, EMAIL);
 
         new MainPage(getDriver())
                 .clickPeopleOnLeftSideMenu();
@@ -392,12 +382,10 @@ public class UsersTest extends BaseTest {
         Assert.assertTrue(actualResultFindUSerName, "true");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testCreateUserCheckInPeople")
     public void testCreateUserCheckInManageUsers() {
 
         final String expectedResultTitle = "Users [Jenkins]";
-
-        TestUtils.createUserAndReturnToMainPage(this, USER_NAME, PASSWORD, USER_FULL_NAME, EMAIL);
 
         new MainPage(getDriver())
                 .clickManageJenkinsPage()
