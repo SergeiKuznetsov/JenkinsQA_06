@@ -238,6 +238,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .clickOkButton(new FreestyleProjectConfigPage(new FreestyleProjectPage(getDriver())))
                 .addExecuteShellBuildStep("echo Hello")
                 .clickSaveButton()
+                .clickBuildNow()
                 .openConsoleOutputForBuild("MyFreestyleProject", 1)
                 .getConsoleOutputText();
 
@@ -256,6 +257,7 @@ public class FreestyleProjectTest extends BaseTest {
                 .getHeader()
                 .clickLogo()
                 .clickJobName("Engineer", new FreestyleProjectPage(getDriver()))
+                .clickBuildNow()
                 .selectBuildItemTheHistoryOnBuildPage(1);
 
         Assert.assertTrue(new BuildPage(getDriver()).buildHeaderIsDisplayed(), "build not created");
