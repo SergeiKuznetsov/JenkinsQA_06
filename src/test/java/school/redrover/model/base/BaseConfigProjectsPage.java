@@ -1,5 +1,6 @@
 package school.redrover.model.base;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -168,12 +169,14 @@ public abstract class BaseConfigProjectsPage<Self extends BaseConfigPage<?, ?>, 
     }
 
     public Self selectParameterInDropDownByType(String type) {
-        for (WebElement element : addParameterDropDownOptions) {
+        for (WebElement element :
+                getWait5().until(ExpectedConditions.visibilityOfAllElements(addParameterDropDownOptions))) {
             if (element.getText().contains(type)) {
                 element.click();
                 break;
             }
         }
+
 
         return (Self) this;
     }
