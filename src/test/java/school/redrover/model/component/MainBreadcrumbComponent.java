@@ -13,6 +13,8 @@ import school.redrover.model.base.BaseMainHeaderPage;
 import school.redrover.model.base.BasePage;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
                 .trim();
     }
 
-    public int countBreadcrumbItems()  {
+    public int countBreadcrumbItems() {
 
         return this
                 .getFullBreadcrumbText()
@@ -58,28 +60,30 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
     }
 
 
-
-    public <ReturnedPage extends BaseMainHeaderPage<?>> ReturnedPage clickBreadcrumbItem(String listItemName, ReturnedPage pageToReturn){
+    public <ReturnedPage extends BaseMainHeaderPage<?>> ReturnedPage clickBreadcrumbItem(String listItemName, ReturnedPage pageToReturn) {
 
         getListItemOfBreadcrumb(listItemName).click();
         return pageToReturn;
     }
 
-    public MainBreadcrumbComponent<Page> getDashboardDropdownMenu() {
+    public MainBreadcrumbComponent<?> getDashboardDropdownMenu() {
         new Actions(getDriver())
                 .moveToElement(getDriver().findElement(By.xpath("//a[text()='Dashboard']")))
                 .pause(Duration.ofMillis(300))
+                .moveToElement(getDriver().findElement(By.xpath("//a[text()='Dashboard']/button")))
+                .click()
+                .build()
                 .perform();
-        getDriver().findElement(By.xpath("//a[text()='Dashboard']/button")).sendKeys(Keys.RETURN);
 
         return this;
     }
 
     public <ReturnedPage extends BaseMainHeaderPage<?>> ReturnedPage clickDropdownOption(String subMenuOption, ReturnedPage pageToReturn) throws InterruptedException {
 
-        getDashboardDropdownMenu();
-//        Thread.sleep(3000);
-        getWait5().until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[contains(text(), '" + subMenuOption + "')]"))).click();
+        getDashboardDropdownMenu()
+                .getDriver()
+                .findElement(By.xpath("//span[contains(text(), '" + subMenuOption + "')]"))
+                .click();
 
         return pageToReturn;
     }
@@ -108,15 +112,19 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
         return menuList;
     }
 
-    public PeoplePage openPeoplePageFromDashboardDropdownMenu () {
-        getDashboardDropdownMenu();
-        getDriver().findElement(By.xpath("//li/a/span[contains(text(), 'People')]")).click();
+    public PeoplePage openPeoplePageFromDashboardDropdownMenu() {
+        getDashboardDropdownMenu()
+        .getDriver()
+                .findElement(By.xpath("//li/a/span[contains(text(), 'People')]"))
+                .click();
+
         return new PeoplePage(getDriver());
     }
 
-    public NewJobPage clickNewItemDashboardDropdownMenu(){
-        getDashboardDropdownMenu();
-        getDriver().findElement(By.xpath("//div[@id='breadcrumb-menu']/div/ul/li/a")).click();
+    public NewJobPage clickNewItemDashboardDropdownMenu() {
+        getDashboardDropdownMenu()
+                .getDriver()
+                .findElement(By.xpath("//div[@id='breadcrumb-menu']/div/ul/li/a")).click();
         return new NewJobPage(getDriver());
     }
 }

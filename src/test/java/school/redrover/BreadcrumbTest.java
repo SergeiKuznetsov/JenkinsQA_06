@@ -12,16 +12,19 @@ import school.redrover.model.jobsconfig.FreestyleProjectConfigPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
 public class BreadcrumbTest extends BaseTest {
     @Test
     public void testNavigateToManageJenkinsSection() throws InterruptedException {
+
         ManageJenkinsPage manageJenkinsPage = new MainPage(getDriver())
                 .getBreadcrumb()
+//                .getDashboardDropdownMenu()
                 .clickDropdownOption("Manage Jenkins", new ManageJenkinsPage(getDriver()));
-//                .clickManageJenkinsOnDropDown();
 
         Assert.assertEquals(manageJenkinsPage.getActualHeader(), "Manage Jenkins");
     }
