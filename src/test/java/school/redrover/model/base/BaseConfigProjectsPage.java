@@ -43,10 +43,10 @@ public abstract class BaseConfigProjectsPage<Self extends BaseConfigPage<?, ?>, 
     @FindBy(xpath = "//input[@name='_.numToKeepStr']")
     private WebElement maxNumOfBuildsToKeepField;
 
-    @FindBy(xpath = "//span[text() = 'Enabled']")
+    @FindBy(xpath = "//button[text() = 'Disable']")
     private WebElement disableJobSwitch;
 
-    @FindBy(xpath = "//span[text() = 'Disabled']")
+    @FindBy(xpath = "//button[text() = 'Enable']")
     private WebElement enableJobSwitch;
 
     @FindBy(xpath = "//label[text()='GitHub project']")
@@ -136,7 +136,7 @@ public abstract class BaseConfigProjectsPage<Self extends BaseConfigPage<?, ?>, 
         return (Self) this;
     }
 
-    public String getTextDisable() {
+    public String getTextDisabled() {
         return getWait10().until(ExpectedConditions.elementToBeClickable(enableJobSwitch)).getText();
     }
 

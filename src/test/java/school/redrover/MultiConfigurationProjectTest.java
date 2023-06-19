@@ -103,7 +103,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     public void testCheckDisableSwitchButtonOnConfigurePage() {
         String statusSwitchButton = new MainPage(getDriver())
                 .clickConfigureDropDown(NAME, new MultiConfigurationProjectConfigPage(new MultiConfigurationProjectPage(getDriver())))
-                .getTextDisable();
+                .getTextDisabled();
 
         Assert.assertEquals(statusSwitchButton, "Disabled");
     }
