@@ -1,6 +1,5 @@
 package school.redrover.model.base;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -45,7 +44,7 @@ public abstract class BaseConfigProjectsPage<Self extends BaseConfigPage<?, ?>, 
     @FindBy(xpath = "//span[text() = 'Enabled']")
     private WebElement disableJobSwitch;
 
-    @FindBy(xpath = "//label[@for='enable-disable-project']")
+    @FindBy(xpath = "//span[text() = 'Disabled']")
     private WebElement enableJobSwitch;
 
     @FindBy(xpath = "//label[text()='GitHub project']")
@@ -130,7 +129,7 @@ public abstract class BaseConfigProjectsPage<Self extends BaseConfigPage<?, ?>, 
     }
 
     public String getTextDisable() {
-        return getWait5().until(ExpectedConditions.elementToBeClickable(enableJobSwitch)).getText();
+        return getWait10().until(ExpectedConditions.elementToBeClickable(enableJobSwitch)).getText();
     }
 
     public String getTextEnabled() {
