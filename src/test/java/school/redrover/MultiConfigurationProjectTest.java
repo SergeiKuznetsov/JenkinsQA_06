@@ -20,21 +20,20 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
     @Test
     public void testCreateProject() {
-        TestUtils.createJob(this, NAME, TestUtils.JobType.MultiConfigurationProject, true);
+        TestUtils.createJob(this, NAME, TestUtils.JobType.MultiConfigurationProject, false);
+
+        Assert.assertEquals(new MultiConfigurationProjectPage(getDriver()).getJobName().substring(8, 32), NAME);
+
+        new MainPage(getDriver())
+                .getHeader()
+                .clickLogo();
 
         Assert.assertEquals(new MainPage(getDriver()).getJobName(), NAME);
     }
 
-    @Test
-    public void testCreateMultiConfigurationProjectOnProjectPage() {
-        TestUtils.createJob(this, NAME, TestUtils.JobType.MultiConfigurationProject, false);
-
-        Assert.assertEquals(new MultiConfigurationProjectPage(getDriver()).getJobName().substring(8, 32), NAME);
-    }
-
-     @Test(dependsOnMethods = "testCreateProject")
+    @Test(dependsOnMethods = "testCreateProject")
     public void testCreateMultiConfigurationProjectWithEqualName() {
-        final String ERROR_MESSAGE_EQUAL_NAME = "A job already exists with the name " + "‘" + NAME + "’";
+        final String errorMessageName = "A job already exists with the name " + "‘" + NAME + "’";
 
         String error = new MainPage(getDriver())
                 .clickNewItem()
@@ -44,12 +43,12 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .getErrorPage()
                 .getErrorMessage();
 
-        Assert.assertEquals(error, ERROR_MESSAGE_EQUAL_NAME);
+        Assert.assertEquals(error, errorMessageName);
     }
 
-    @Test(dependsOnMethods = "testCreateMultiConfigurationProjectOnProjectPage")
+    @Test(dependsOnMethods = "testCreateMultiConfigurationProjectWithEqualName")
     public void testRenameFromDropDownMenu() {
-        String NewNameProject = new MainPage(getDriver())
+        String newNameProject = new MainPage(getDriver())
                 .dropDownMenuClickRename(NAME, new MultiConfigurationProjectPage(getDriver()))
                 .enterNewName(NEW_NAME)
                 .clickRenameButton()
@@ -57,7 +56,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .clickLogo()
                 .getJobName();
 
-        Assert.assertEquals(NewNameProject, NEW_NAME);
+        Assert.assertEquals(newNameProject, NEW_NAME);
     }
 
     @Test(dependsOnMethods = "testRenameFromDropDownMenu")
@@ -100,44 +99,54 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertEquals(disabled.getEnableButtonText(), "Enable");
     }
 
-    @Test()
-    public void testMultiConfigurationProjectConfigurePageDisabled() {
-        String configPage = new MainPage(getDriver())
-                .clickNewItem()
-                .enterItemName("My Multi configuration project")
-                .selectJobType(TestUtils.JobType.MultiConfigurationProject)
-                .clickOkButton(new MultiConfigurationProjectConfigPage(new MultiConfigurationProjectPage(getDriver())))
-                .clickSaveButton()
-                .clickConfigure()
-                .switchCheckboxDisable()
+    @Test(dependsOnMethods = "testDisable")
+    public void testCheckDisableSwitchButtonOnConfigurePage() {
+        String statusSwitchButton = new MainPage(getDriver())
+                .clickConfigureDropDown(NAME, new MultiConfigurationProjectConfigPage(new MultiConfigurationProjectPage(getDriver())))
                 .getTextDisable();
 
-        Assert.assertEquals(configPage, "Disabled");
+        Assert.assertEquals(statusSwitchButton, "Disabled");
     }
 
-    @Ignore
-    @Test(dependsOnMethods = "testMultiConfigurationProjectConfigurePageDisabled")
-    public void testMultiConfigurationProjectConfigurePageEnable() {
-        String configPage = new MainPage(getDriver())
-                .clickJobName("My Multi configuration project", new MultiConfigurationProjectPage(getDriver()))
+    @Test(dependsOnMethods = "testCheckDisableSwitchButtonOnConfigurePage")
+    public void testCheckDisableIconOnDashboard() {
+        String statusIcon = new MainPage(getDriver())
+                .getJobBuildStatusIcon(NAME);
+
+        Assert.assertEquals(statusIcon, "Disabled");
+    }
+
+    @Test(dependsOnMethods = "testCheckDisableIconOnDashboard")
+    public void testBuildNowOptionNotPresentInDisabledProject() {
+        List<String> dropDownMenuItems = new MainPage(getDriver())
+                .getListOfProjectMenuItems(NAME);
+
+        Assert.assertFalse(dropDownMenuItems.contains("Build Now"), "'Build Now' option is present in drop-down menu");
+    }
+
+    @Test(dependsOnMethods = "testBuildNowOptionNotPresentInDisabledProject")
+    public void testConfigurePageEnable() {
+        String projectPage = new MainPage(getDriver())
+                .clickJobName(NAME, new MultiConfigurationProjectPage(getDriver()))
                 .clickConfigure()
                 .switchCheckboxEnabled()
-                .getTextEnabled();
-
-        Assert.assertEquals(configPage, "Enabled");
-    }
-
-    @Test(dependsOnMethods = "testDisable")
-    public void testEnabledMultiConfigurationProject() {
-        String disableButtonText = new MainPage(getDriver())
-                .clickJobName(NAME, new MultiConfigurationProjectPage(getDriver()))
-                .clickEnable()
+                .clickSaveButton()
                 .getDisableButtonText();
 
-        Assert.assertEquals(disableButtonText, "Disable Project");
+        Assert.assertEquals(projectPage, "Disable Project");
     }
 
-    @Test(dependsOnMethods = "testCreateMultiConfigurationProjectWithEqualName")
+    @Test(dependsOnMethods = "testConfigurePageEnable")
+    public void testEnabled() {
+        String enabledButtonText = new MainPage(getDriver())
+                .clickJobName(NAME, new MultiConfigurationProjectPage(getDriver()))
+                .clickConfigure()
+                .getTextEnabled();
+
+        Assert.assertEquals(enabledButtonText, "Enabled");
+    }
+
+    @Test(dependsOnMethods = "testEnabled")
     public void testJobDropdownDelete() {
         String helloMessage = new MainPage((getDriver()))
                 .dropDownMenuClickDelete(NAME)
@@ -148,7 +157,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Ignore
-    @Test(dependsOnMethods = "testCreateMultiConfigurationProjectOnProjectPage")
+    @Test(dependsOnMethods = "testCreateProject")
     public void testProjectPageDelete() {
         MainPage deletedProjPage = new MainPage(getDriver())
                 .clickJobName(NAME, new MultiConfigurationProjectPage(getDriver()))
@@ -251,46 +260,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertEquals(exceptionMessage, "» This field cannot be empty, please enter a valid name");
     }
 
-    @Test
-    public void testDisableEnableProject() {
-        TestUtils.createJob(this, "DisableTestName", TestUtils.JobType.MultiConfigurationProject, false);
-
-        String checkStatusIsDisabled = new MultiConfigurationProjectPage(getDriver())
-                .clickDisable()
-                .getDisabledMessageText();
-        Assert.assertTrue(checkStatusIsDisabled.contains("This project is currently disabled"));
-
-        boolean checkStatusIsEnabled = new MultiConfigurationProjectPage(getDriver())
-                .clickEnable()
-                .isDisableButtonDisplayed();
-        Assert.assertTrue(checkStatusIsEnabled);
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testCreateProject")
-    public void testCheckDisableIconOnDashboard() {
-        String statusIcon = new MainPage(getDriver())
-                .clickJobName(NAME, new MultiConfigurationProjectPage(getDriver()))
-                .clickDisable()
-                .getBreadcrumb()
-                .clickDashboardButton()
-                .getJobBuildStatusIcon(NAME);
-
-        Assert.assertEquals(statusIcon, "Disabled");
-    }
-
-    @Test
-    public void testDisableProjectFromConfigurationPage() {
-        final String disableResult = "This project is currently disabled";
-
-        TestUtils.createJob(this, NAME, TestUtils.JobType.MultiConfigurationProject, false);
-        String disableMessage = new MultiConfigurationProjectPage(getDriver())
-                .clickDisable()
-                .getDisabledMessageText();
-
-        Assert.assertTrue(disableMessage.contains(disableResult), "Not found such message");
-    }
-
     @Ignore
     @Test(dependsOnMethods = "testCreateProject")
     public void testDeleteProjectFromDropDownMenu() {
@@ -341,7 +310,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    public void testCreateMultiConfigurationProjectWithDescription() {
+    public void testCreateProjectWithDescription() {
         final String multiConfigurationProjectName = "New project";
         final String description = "Description text";
 
@@ -359,7 +328,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    public void testConfigureOldBuildForMultiConfigurationProject() {
+    public void testConfigureOldBuildForProject() {
         final String multiConfProjectName = "New project";
         final int displayedDaysToKeepBuilds = 5;
         final int displayedMaxNumOfBuildsToKeep = 7;
@@ -384,7 +353,7 @@ public class MultiConfigurationProjectTest extends BaseTest {
     }
 
     @Test
-    public void testCreateMultiConfigurationProjectWithSpaceInsteadName() {
+    public void testCreateProjectWithSpaceInsteadName() {
         final String expectedResult = "No name is specified";
 
         String errorMessage = new MainPage(getDriver())
@@ -396,19 +365,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 .getErrorMessage();
 
         Assert.assertEquals(errorMessage, expectedResult);
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testCreateProject")
-    public void testBuildNowOptionNotPresentInDisabledProject() {
-        List<String> dropDownMenuItems = new MainPage(getDriver())
-                .clickJobName(NAME, new MultiConfigurationProjectPage(getDriver()))
-                .clickDisable()
-                .getHeader()
-                .clickLogo()
-                .getListOfProjectMenuItems(NAME);
-
-        Assert.assertFalse(dropDownMenuItems.contains("Build Now"), "'Build Now' option is present in drop-down menu");
     }
 
     @Test
