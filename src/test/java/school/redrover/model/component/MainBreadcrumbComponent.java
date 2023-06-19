@@ -13,8 +13,6 @@ import school.redrover.model.base.BaseMainHeaderPage;
 import school.redrover.model.base.BasePage;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,17 +22,7 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
         super(page);
     }
 
-    private WebElement getListItemOfBreadcrumb(String listItemName) {
-
-        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
-                        By.xpath("//li[@class='jenkins-breadcrumbs__list-item']" +
-                                "/a[contains(text(), '" + listItemName + "')]"
-                        )
-                )
-        );
-    }
-
-    private String getFullBreadcrumbText() {
+    public String getFullBreadcrumbText() {
         return getWait5()
                 .until(ExpectedConditions.visibilityOfElementLocated
                         (By.xpath("//div[@id='breadcrumbBar']")))
@@ -74,6 +62,11 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
                 .click()
                 .build()
                 .perform();
+    }
+
+    public MainBreadcrumbComponent<Page> getDashboardDropdownMenu() {
+        hoverOver(By.xpath("//a[text()='Dashboard']"));
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='Dashboard']/button"))).sendKeys(Keys.RETURN);
 
         return this;
     }
@@ -126,6 +119,15 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
                 .getDriver()
                 .findElement(By.xpath("//div[@id='breadcrumb-menu']/div/ul/li/a")).click();
         return new NewJobPage(getDriver());
+    }
+
+    public MainBreadcrumbComponent<?> moveToManageJenkinsLink() {
+        new Actions(getDriver()).moveToElement(getDriver().findElement(By.cssSelector("#breadcrumb-menu a[href='/manage'] span"))).perform();
+        return this;
+    }
+
+    public void clickManageJenkinsSubmenu(String locator) {
+        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath(locator))).click();
     }
 }
 
