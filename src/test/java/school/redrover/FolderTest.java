@@ -80,7 +80,8 @@ public class FolderTest extends BaseTest {
 
         MainPage mainPage = new MainPage(getDriver())
                 .getBreadcrumb()
-                .clickNewItemDashboardDropdownMenu()
+                .getDashboardDropdownMenu()
+                .clickDropdownOption("New Item", new NewJobPage(getDriver()))
                 .enterItemName(NAME_2)
                 .selectJobType(TestUtils.JobType.Folder)
                 .clickOkButton(new FolderConfigPage(new FolderPage(getDriver())))

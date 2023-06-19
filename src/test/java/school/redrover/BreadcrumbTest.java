@@ -3,24 +3,25 @@ package school.redrover;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import school.redrover.model.*;
+import school.redrover.model.MainPage;
+import school.redrover.model.ManageJenkinsPage;
+import school.redrover.model.PeoplePage;
+import school.redrover.model.PluginsPage;
 import school.redrover.model.jobs.FreestyleProjectPage;
 import school.redrover.model.jobsconfig.FreestyleProjectConfigPage;
 import school.redrover.runner.BaseTest;
 import school.redrover.runner.TestUtils;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
 public class BreadcrumbTest extends BaseTest {
     @Test
-    public void testNavigateToManageJenkinsSection() throws InterruptedException {
+    public void testNavigateToManageJenkinsSection() {
 
         ManageJenkinsPage manageJenkinsPage = new MainPage(getDriver())
                 .getBreadcrumb()
-//                .getDashboardDropdownMenu()
+                .getDashboardDropdownMenu()
                 .clickDropdownOption("Manage Jenkins", new ManageJenkinsPage(getDriver()));
 
         Assert.assertEquals(manageJenkinsPage.getActualHeader(), "Manage Jenkins");
@@ -116,7 +117,8 @@ public class BreadcrumbTest extends BaseTest {
         String actualTitle = new MainPage(getDriver())
                 .clickBuildsHistoryButton()
                 .getBreadcrumb()
-                .openPeoplePageFromDashboardDropdownMenu()
+                .getDashboardDropdownMenu()
+                .clickDropdownOption("People", new PeoplePage(getDriver()))
                 .getPageTitle();
 
         Assert.assertEquals(actualTitle, "People");

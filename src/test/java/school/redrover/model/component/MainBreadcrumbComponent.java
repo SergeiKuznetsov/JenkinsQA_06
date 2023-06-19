@@ -1,13 +1,10 @@
 package school.redrover.model.component;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import school.redrover.model.MainPage;
-import school.redrover.model.NewJobPage;
-import school.redrover.model.PeoplePage;
 import school.redrover.model.base.BaseComponent;
 import school.redrover.model.base.BaseMainHeaderPage;
 import school.redrover.model.base.BasePage;
@@ -47,6 +44,15 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
         return new MainPage(getDriver());
     }
 
+    private WebElement getListItemOfBreadcrumb(String listItemName) {
+
+        return getWait5().until(ExpectedConditions.visibilityOfElementLocated(
+                        By.xpath("//li[@class='jenkins-breadcrumbs__list-item']" +
+                                "/a[contains(text(), '" + listItemName + "')]"
+                        )
+                )
+        );
+    }
 
     public <ReturnedPage extends BaseMainHeaderPage<?>> ReturnedPage clickBreadcrumbItem(String listItemName, ReturnedPage pageToReturn) {
 
@@ -62,16 +68,11 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
                 .click()
                 .build()
                 .perform();
-    }
-
-    public MainBreadcrumbComponent<Page> getDashboardDropdownMenu() {
-        hoverOver(By.xpath("//a[text()='Dashboard']"));
-        getWait2().until(ExpectedConditions.elementToBeClickable(By.xpath("//a[text()='Dashboard']/button"))).sendKeys(Keys.RETURN);
 
         return this;
     }
 
-    public <ReturnedPage extends BaseMainHeaderPage<?>> ReturnedPage clickDropdownOption(String subMenuOption, ReturnedPage pageToReturn) throws InterruptedException {
+    public <ReturnedPage extends BaseMainHeaderPage<?>> ReturnedPage clickDropdownOption(String subMenuOption, ReturnedPage pageToReturn) {
 
         getDashboardDropdownMenu()
                 .getDriver()
@@ -103,22 +104,6 @@ public class MainBreadcrumbComponent<Page extends BasePage<?, ?>> extends BaseCo
             menuList.add(el.getAttribute("innerText"));
         }
         return menuList;
-    }
-
-    public PeoplePage openPeoplePageFromDashboardDropdownMenu() {
-        getDashboardDropdownMenu()
-        .getDriver()
-                .findElement(By.xpath("//li/a/span[contains(text(), 'People')]"))
-                .click();
-
-        return new PeoplePage(getDriver());
-    }
-
-    public NewJobPage clickNewItemDashboardDropdownMenu() {
-        getDashboardDropdownMenu()
-                .getDriver()
-                .findElement(By.xpath("//div[@id='breadcrumb-menu']/div/ul/li/a")).click();
-        return new NewJobPage(getDriver());
     }
 
     public MainBreadcrumbComponent<?> moveToManageJenkinsLink() {
