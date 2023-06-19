@@ -146,17 +146,14 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertEquals(enabledButtonText, "Enabled");
     }
 
-    @Test
+    @Test(dependsOnMethods = "testEnabled")
     public void testCheckGeneralParametersDisplayedAndClickable() {
-        MultiConfigurationProjectConfigPage config = new MainPage(getDriver())
-                .clickNewItem()
-                .enterItemName(NAME)
-                .selectJobType(TestUtils.JobType.MultiConfigurationProject)
-                .clickOkButton(new MultiConfigurationProjectConfigPage(new MultiConfigurationProjectPage(getDriver())));
+        MultiConfigurationProjectConfigPage parameter = new MainPage(getDriver())
+                .clickConfigureDropDown(NAME, new MultiConfigurationProjectConfigPage(new MultiConfigurationProjectPage(getDriver())));
 
         boolean checkboxesVisibleClickable = true;
         for (int i = 4; i <= 8; i++) {
-            WebElement checkbox = config.getCheckboxById(i);
+            WebElement checkbox = parameter.getCheckboxById(i);
             if (!checkbox.isDisplayed() || !checkbox.isEnabled()) {
                 checkboxesVisibleClickable = false;
                 break;
@@ -165,31 +162,20 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertTrue(checkboxesVisibleClickable);
     }
 
-    @Ignore
-    @Test
+    @Test(dependsOnMethods = "testCheckGeneralParametersDisplayedAndClickable")
     public void testBuildNowDropDownMenu() {
-        TestUtils.createJob(this, NAME, TestUtils.JobType.MultiConfigurationProject, true);
-
         Assert.assertEquals(new MainPage(getDriver()).getJobBuildStatus(NAME), "Not built");
 
-        MultiConfigurationProjectPage multiConfigurationProjectPage = new MainPage(getDriver())
+        String jobBuildStatus = new MainPage(getDriver())
                 .clickJobDropdownMenuBuildNow(NAME)
-                .clickJobName(NAME, new MultiConfigurationProjectPage(getDriver()));
+                .clickJobName(NAME, new MultiConfigurationProjectPage(getDriver()))
+                .getJobBuildStatus(NAME);
 
-        Assert.assertEquals(multiConfigurationProjectPage.getJobBuildStatus(NAME), "Success");
+        Assert.assertEquals(jobBuildStatus, "Success");
     }
 
-    @Test
-    public void testCheckExceptionOfNameToMultiConfiguration() {
-        String exceptionMessage = new MainPage(getDriver())
-                .clickNewItem()
-                .selectJobType(TestUtils.JobType.MultiConfigurationProject)
-                .getItemNameRequiredMessage();
-
-        Assert.assertEquals(exceptionMessage, "» This field cannot be empty, please enter a valid name");
-    }
-    @Test(dependsOnMethods = "testCreateProject")
-    public void testAddDescriptionInProject() {
+    @Test(dependsOnMethods = "testBuildNowDropDownMenu")
+    public void testAddDescription() {
         final String textDescription = "Text Description Test";
 
         String getDescription = new MultiConfigurationProjectPage(getDriver())
@@ -199,6 +185,40 @@ public class MultiConfigurationProjectTest extends BaseTest {
 
         Assert.assertEquals(getDescription, textDescription);
     }
+
+    @Test(dependsOnMethods = "testAddDescription")
+    public void testDeleteProjectFromDropDownMenu() {
+        List<String> deleteProject = new MainPage(getDriver())
+                .dropDownMenuClickDelete(NAME)
+                .acceptAlert()
+                .getJobList();
+
+        Assert.assertEquals(deleteProject.size(), 0);
+    }
+        @Test(dependsOnMethods = "testDeleteProjectFromDropDownMenu")
+    public void testCreateProjectWithSpaceInsteadName() {
+        final String expectedResult = "No name is specified";
+
+        String errorMessage = new MainPage(getDriver())
+                .clickNewItem()
+                .enterItemName(" ")
+                .selectJobType(TestUtils.JobType.MultiConfigurationProject)
+                .clickOkButton(new MultiConfigurationProjectConfigPage(new MultiConfigurationProjectPage(getDriver())))
+                .getErrorPage()
+                .getErrorMessage();
+
+        Assert.assertEquals(errorMessage, expectedResult);
+    }
+
+     @Test(dependsOnMethods = "testCreateProjectWithSpaceInsteadName")
+    public void testCheckExceptionOfNameToMultiConfiguration() {
+    String exceptionMessage = new MainPage(getDriver())
+            .clickNewItem()
+            .selectJobType(TestUtils.JobType.MultiConfigurationProject)
+            .getItemNameRequiredMessage();
+
+    Assert.assertEquals(exceptionMessage, "» This field cannot be empty, please enter a valid name");
+}
 
     @Test
     public void testCreateProjectWithDescription() {
@@ -243,32 +263,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
                 multiConfigurationProjectConfigPage.getMaxNumOfBuildsToKeep("value")), displayedMaxNumOfBuildsToKeep);
     }
 
-    @Test
-    public void testCreateProjectWithSpaceInsteadName() {
-        final String expectedResult = "No name is specified";
-
-        String errorMessage = new MainPage(getDriver())
-                .clickNewItem()
-                .enterItemName(" ")
-                .selectJobType(TestUtils.JobType.MultiConfigurationProject)
-                .clickOkButton(new MultiConfigurationProjectConfigPage(new MultiConfigurationProjectPage(getDriver())))
-                .getErrorPage()
-                .getErrorMessage();
-
-        Assert.assertEquals(errorMessage, expectedResult);
-    }
-
-    @Ignore
-    @Test(dependsOnMethods = "testCreateProject")
-    public void testDeleteProjectFromDropDownMenu() {
-        List<String> deleteProject = new MainPage(getDriver())
-                .dropDownMenuClickDelete(NAME)
-                .acceptAlert()
-                .getJobList();
-
-        Assert.assertEquals(deleteProject.size(), 0);
-    }
-
     @Ignore
     @Test(dependsOnMethods = "testCreateProject")
     public void testProjectPageDelete() {
@@ -279,15 +273,6 @@ public class MultiConfigurationProjectTest extends BaseTest {
         Assert.assertEquals(deletedProjPage.getTitle(), "Dashboard [Jenkins]");
 
         Assert.assertEquals(deletedProjPage.getWelcomeText(), "Welcome to Jenkins!");
-    }
-    @Test(dependsOnMethods = "testEnabled")
-    public void testJobDropdownDelete() {
-        String helloMessage = new MainPage((getDriver()))
-                .dropDownMenuClickDelete(NAME)
-                .acceptAlert()
-                .getWelcomeText();
-
-        Assert.assertEquals(helloMessage, "Welcome to Jenkins!");
     }
 
     @Test
