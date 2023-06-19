@@ -188,11 +188,10 @@ public abstract class BaseConfigProjectsPage<Self extends BaseConfigPage<?, ?>, 
     }
 
     public Self openAddParameterDropDown() {
-        getWait5().until(ExpectedConditions.elementToBeClickable(addParametersDropDown));
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("arguments[0].scrollIntoView();",
                 getWait5().until(ExpectedConditions.elementToBeClickable(projectIsParametrizedCheckBox)));
-        addParametersDropDown.click();
+        getWait5().until(ExpectedConditions.elementToBeClickable(addParametersDropDown)).click();
 
         return (Self) this;
     }
